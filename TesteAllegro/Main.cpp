@@ -12,19 +12,19 @@
 
 //Global things
 const float FPS = 60; //nao precisa explicar isso neh?
-const int BOUNCER_SIZE = 32; //tamanho do mouse e block
+const int BOUNCER_SIZE = 32; //tamanho do mouse e block(por enquanto)
 const int SCREEN_W = 1366; //resolução da telinha
-const int SCREEN_H = 768; //FON
+const int SCREEN_H = 768;  //FON
 Flag flag; //struct de flag, muito importante mais pra frente
 
 void addon_init() //onde enfio essa joça?
 {
 	al_init(); //inicializa a allegro
-	al_install_keyboard(); //inicializa o addon de Keyboard, chegar propriedades do projeto -> Allegro 5 -> Add-Ons
-	al_install_mouse(); //inicializa o addon de Mouse, chegar propriedades do projeto -> Allegro 5 -> Add-Ons
-	al_init_image_addon(); //inicializa o addon de Image, chegar propriedades do projeto -> Allegro 5 -> Add-Ons 
-	al_init_font_addon(); //inicializa o addon de Fonts, chegar propriedades do projeto -> Allegro 5 -> Add-Ons
-	al_init_ttf_addon(); //inicializa o addon de TrueType Fonts, chegar propriedades do projeto -> Allegro 5 -> Add-Ons
+	al_install_keyboard(); //inicializa o addon de Keyboard, checar propriedades do projeto -> Allegro 5 -> Add-Ons
+	al_install_mouse(); //inicializa o addon de Mouse, checar propriedades do projeto -> Allegro 5 -> Add-Ons
+	al_init_image_addon(); //inicializa o addon de Image, checar propriedades do projeto -> Allegro 5 -> Add-Ons 
+	al_init_font_addon(); //inicializa o addon de Fonts, checar propriedades do projeto -> Allegro 5 -> Add-Ons
+	al_init_ttf_addon(); //inicializa o addon de TrueType Fonts, checar propriedades do projeto -> Allegro 5 -> Add-Ons
 }
 
 int main(int argc, char **argv) 
@@ -42,6 +42,7 @@ int main(int argc, char **argv)
 	Keyboard keyboard; //coisas do teclado
 	Block field;  //blocos do jogo
 	bool key[4] = { false, false, false, false }; //funfa em combo com o MYKEYS
+
 
 	flag_init(); //inicializador de flags
 
@@ -103,22 +104,22 @@ int main(int argc, char **argv)
 		{
 			if (key[KEY_UP] && field.bouncer_y >= 4.0)
 			{
-				field.bouncer_y -= 13.0;
+				//field.bouncer_y -= 13.0;
 			}
 
-			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - BOUNCER_SIZE - 4.0)
+			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 80 /*tamanho do bloco*/ - 4.0)
 			{
-				field.bouncer_y += 13.0;
+				//field.bouncer_y += 13.0;
 			}
 
 			if (key[KEY_LEFT] && field.bouncer_x >= 4.0)
 			{
-				field.bouncer_x -= 13.0;
+				//field.bouncer_x -= 13.0;
 			}
 
-			if (key[KEY_RIGHT] && field.bouncer_x <= SCREEN_W - BOUNCER_SIZE - 4.0)
+			if (key[KEY_RIGHT] && field.bouncer_x <= SCREEN_W - 80 /*tamanho do bloco*/ - 4.0)
 			{
-				field.bouncer_x += 13.0;
+				//field.bouncer_x += 13.0;
 			}
 
 			flag.redraw = true;

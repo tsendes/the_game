@@ -1,7 +1,6 @@
 #pragma once
 #include <allegro5/allegro.h>
 
-extern const int BOUNCER_SIZE;
 extern const int SCREEN_W;
 extern const int SCREEN_H;
 
@@ -13,6 +12,7 @@ public:
 	float bouncer_y; //local de inicializaçao
 	Block();
 	~Block();
+	Block(int x, int y);
 
 private:
 

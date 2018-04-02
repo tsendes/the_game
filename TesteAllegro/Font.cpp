@@ -2,7 +2,7 @@
 
 Font::Font()
 {
-	font = al_load_font("C:/Windows/Fonts/Calibri.ttf", 48, 0);
+	font = al_load_font("C:/Windows/Fonts/Calibri.ttf", 36, 0);
 }
 Font::~Font()
 {
