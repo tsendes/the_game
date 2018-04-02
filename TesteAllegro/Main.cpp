@@ -1,4 +1,4 @@
-//Class things and requirements
+ï»¿//Class things and requirements
 #include "Display.h"
 #include "Background.h"
 #include "Font.h"
@@ -13,11 +13,11 @@
 //Global things
 const float FPS = 60; //nao precisa explicar isso neh?
 const int BOUNCER_SIZE = 32; //tamanho do mouse e block(por enquanto)
-const int SCREEN_W = 1366; //resolução da telinha
+const int SCREEN_W = 1366; //resoluÃ§Ã£o da telinha
 const int SCREEN_H = 768;  //FON
 Flag flag; //struct de flag, muito importante mais pra frente
 
-void addon_init() //onde enfio essa joça?
+void addon_init() //onde enfio essa joÃ§a?
 {
 	al_init(); //inicializa a allegro
 	al_install_keyboard(); //inicializa o addon de Keyboard, checar propriedades do projeto -> Allegro 5 -> Add-Ons
@@ -82,25 +82,25 @@ int main(int argc, char **argv)
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create field block!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
 	
-	al_register_event_source(event_queue, al_get_display_event_source(display.display)); //add display na fila de geração de eventos
-	al_register_event_source(event_queue, al_get_timer_event_source(tick_s)); //add temporizador na fila de geração de eventos
-	al_register_event_source(event_queue, al_get_mouse_event_source()); //add mouse na fila de geração de eventos
-	al_register_event_source(event_queue, al_get_keyboard_event_source()); //add teclado na fila de geração de eventos
+	al_register_event_source(event_queue, al_get_display_event_source(display.display)); //add display na fila de geraÃ§Ã£o de eventos
+	al_register_event_source(event_queue, al_get_timer_event_source(tick_s)); //add temporizador na fila de geraÃ§Ã£o de eventos
+	al_register_event_source(event_queue, al_get_mouse_event_source()); //add mouse na fila de geraÃ§Ã£o de eventos
+	al_register_event_source(event_queue, al_get_keyboard_event_source()); //add teclado na fila de geraÃ§Ã£o de eventos
 
 	al_clear_to_color(al_map_rgb(0, 0, 0)); //fundo inicial preto
-	al_draw_text(font.font, al_map_rgb(255, 255, 255), SCREEN_W / 2.0, SCREEN_H / 2.0, ALLEGRO_ALIGN_CENTER, "A muito tempo atras, no meio do deserto..."); //printa na tela a msg
+	al_draw_text(font.font, al_map_rgb(255, 255, 255), SCREEN_W / 2.0, SCREEN_H / 2.0, ALLEGRO_ALIGN_CENTER, "Carregando... Aguarde"); //printa na tela a msg
 
-	al_flip_display(); //trocao display visual pelo modificavel
+	al_flip_display(); //troca o display visual pelo modificavel
 	al_rest(2); //aguarda X segundos ate continuar
 
 	al_start_timer(tick_s); //starta o timer
 
-	while(!flag.doexit) //enquanto nao for decidido que é o fim do programa
+	while(!flag.doexit) //enquanto nao for decidido que Ã© o fim do programa
 	{
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
 
-		if (ev.type == ALLEGRO_EVENT_TIMER)  //dps que a tecla é pressionada rola isso aqui
+		if (ev.type == ALLEGRO_EVENT_TIMER)  //dps que a tecla Ã© pressionada rola isso aqui
 		{
 			if (key[KEY_UP] && field.bouncer_y >= 4.0)
 			{
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 		{
 			break;
 		}
-		else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES || ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY) //evento de movimentaçao do mouse
+		else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES || ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY) //evento de movimentaÃ§ao do mouse
 		{
 			mouse.bouncer_x = ev.mouse.x;
 			mouse.bouncer_y = ev.mouse.y;
@@ -180,7 +180,7 @@ int main(int argc, char **argv)
 			}
 		}
 
-		if (flag.redraw && al_is_event_queue_empty(event_queue)) //evento de nao tem nada na fila de eventos e foi solicitado a atualização da telinha
+		if (flag.redraw && al_is_event_queue_empty(event_queue)) //evento de nao tem nada na fila de eventos e foi solicitado a atualizaÃ§Ã£o da telinha
 		{
 			flag.redraw = false;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
