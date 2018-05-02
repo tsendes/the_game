@@ -5,8 +5,9 @@
 
 class Font
 {
-	public:
-		ALLEGRO_FONT *font; //fonte de escrita na telinha
-		Font();
-		~Font();
+public:
+	ALLEGRO_FONT *font; //fonte de escrita na telinha
+	Font();
+	~Font();
+	void create_font();
 };

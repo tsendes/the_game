@@ -1,19 +1,14 @@
 #pragma once
 #include <allegro5/allegro.h>
 
-extern const int SCREEN_W;
-extern const int SCREEN_H;
-
 class Block
 {
 public:
-	ALLEGRO_BITMAP * field; //gera o bloco, é um mouse por agora
+	ALLEGRO_BITMAP * field; //gera o bloco, é Flowey por agora
 	float bouncer_x; //local de inicializaçao
 	float bouncer_y; //local de inicializaçao
 	Block();
 	~Block();
 	Block(int x, int y);
-
-private:
-
+	void create_block();
 };

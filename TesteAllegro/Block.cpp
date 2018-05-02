@@ -2,9 +2,7 @@
 
 Block::Block()
 {
-	field = al_load_bitmap("Block.png");
-	bouncer_x = 1286;
-	bouncer_y = 688;
+	//nothing
 }
 
 Block::~Block()
@@ -14,8 +12,14 @@ Block::~Block()
 
 Block::Block(int x, int y)
 {
-	field = al_load_bitmap("Block.png");
+	field = al_load_bitmap("image.png");
 	bouncer_x = x;
 	bouncer_y = y;
 
+}
+void Block::create_block()
+{
+	field = al_load_bitmap("image.png");
+	bouncer_x = 480;
+	bouncer_y = 300;
 }

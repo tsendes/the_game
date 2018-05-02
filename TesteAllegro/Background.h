@@ -6,8 +6,9 @@
 
 class Background
 {
-	public:
-		ALLEGRO_BITMAP *image; //plano de fundo
-		Background();
-		~Background();
+public:
+	ALLEGRO_BITMAP *image; //plano de fundo
+	void create_background();
+	Background();
+	~Background();
 };
