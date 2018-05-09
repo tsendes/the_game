@@ -11,14 +11,13 @@ Game::Game()
 	font.create_font();
 	environment.create_background();
 	keyboard.create_keyboard();
-	field.create_block();
+	field.create_player();
 
 	flag_init(); //inicializador de flags
 	error_check();
 	register_interrupts();
 	draw_screen();
 	al_start_timer(tick_s); //starta o timer
-
 	run_game();
 }
 
@@ -56,7 +55,7 @@ void Game::error_check()
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to load font!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
-	if (!event_queue) //eventos
+	if (!event_queue) //events
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create event_queue!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
@@ -83,7 +82,7 @@ void Game::draw_screen()
 	al_draw_text(font.font, al_map_rgb(255, 255, 255), SCREEN_W / 2.0, SCREEN_H / 2.0, ALLEGRO_ALIGN_CENTER, "Carregando... Aguarde"); //printa na tela a msg
 
 	al_flip_display(); //troca o display visual pelo modificavel
-	al_rest(2); //aguarda X segundos ate continuar
+	al_rest(1); //aguarda X segundos ate continuar
 }
 void Game::run_game()
 {
@@ -94,24 +93,39 @@ void Game::run_game()
 
 		if (ev.type == ALLEGRO_EVENT_TIMER)  //dps que a tecla é pressionada rola isso aqui
 		{
+			field.cont++;
+			if (field.cont == 15)
+			{
+				field.cont = 0;
+				field.coluna++;
+				field.x_atual += field.larg;
+
+				if (field.coluna >= 4)
+				{
+					field.coluna = 0;
+					field.x_atual = 0;
+				}
+			}
+			
 			if (key[KEY_UP] && field.bouncer_y >= 4.0)
 			{
-				//field.bouncer_y -= 13.0;
+				field.bouncer_y -= 7.0;
 			}
 
-			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 80 /*tamanho do bloco*/ - 4.0)
+			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 34 /*tamanho do bloco*/ - 4.0)
 			{
-				//field.bouncer_y += 13.0;
+				field.bouncer_y += 7.0;
 			}
 
 			if (key[KEY_LEFT] && field.bouncer_x >= 4.0)
 			{
-				//field.bouncer_x -= 13.0;
+				field.bouncer_x -= 7.0;
+				
 			}
 
-			if (key[KEY_RIGHT] && field.bouncer_x <= SCREEN_W - 80 /*tamanho do bloco*/ - 4.0)
+			if (key[KEY_RIGHT] && field.bouncer_x <= SCREEN_W - 18/*tamanho do bloco*/ - 4.0)
 			{
-				//field.bouncer_x += 13.0;
+				field.bouncer_x += 7.0;
 			}
 
 			flag.redraw = true;
@@ -178,7 +192,7 @@ void Game::run_game()
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_hide_mouse_cursor(display.display);
 			al_draw_bitmap(environment.image, 0, 0, 0);
-			al_draw_bitmap(field.field, field.bouncer_x, field.bouncer_y, 0);
+			al_draw_bitmap_region(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, 0);
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0);
 			al_flip_display();
 		}

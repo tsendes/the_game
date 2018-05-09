@@ -1,7 +1,7 @@
 #pragma once
 //Class things and requirements
 #include "Display.h"
-#include "Block.h"
+#include "Player.h"
 #include "Mouse.h"
 #include "Background.h"
 #include "Font.h"
@@ -25,6 +25,7 @@ private:
 	void register_interrupts();
 	void draw_screen();
 	void run_game();
+	
 
 	//Stranger things
 	ALLEGRO_EVENT_QUEUE *event_queue; //inicia uma fila de eventos
@@ -34,7 +35,7 @@ private:
 	Font font; //fonte para escrita na telinha
 	Background environment; //plano de fundo da telinha
 	Keyboard keyboard; //coisas do teclado
-	Block field;  //blocos do jogo
+	Player field;  //blocos do jogo
 	bool key[4] = { false, false, false, false }; //funfa em combo com o MYKEYS
 
 	
