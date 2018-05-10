@@ -93,26 +93,14 @@ void Game::run_game()
 
 		if (ev.type == ALLEGRO_EVENT_TIMER)  //dps que a tecla é pressionada rola isso aqui
 		{
-			field.cont++;
-			if (field.cont == 15)
-			{
-				field.cont = 0;
-				field.coluna++;
-				field.x_atual += field.larg;
-
-				if (field.coluna >= 4)
-				{
-					field.coluna = 0;
-					field.x_atual = 0;
-				}
-			}
+			
 			
 			if (key[KEY_UP] && field.bouncer_y >= 4.0)
 			{
 				field.bouncer_y -= 7.0;
 			}
 
-			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 34 /*tamanho do bloco*/ - 4.0)
+			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 35 * 4 /*tamanho do bloco*/ - 4.0)
 			{
 				field.bouncer_y += 7.0;
 			}
@@ -120,12 +108,38 @@ void Game::run_game()
 			if (key[KEY_LEFT] && field.bouncer_x >= 4.0)
 			{
 				field.bouncer_x -= 7.0;
+				field.cont++;
+				if (field.cont == 6)
+				{
+					field.cont = 0;
+					field.coluna++;
+					field.x_atual += field.larg;
+
+					if (field.coluna >= 4)
+					{
+						field.coluna = 0;
+						field.x_atual = 0;
+					}
+				}
 				
 			}
 
-			if (key[KEY_RIGHT] && field.bouncer_x <= SCREEN_W - 18/*tamanho do bloco*/ - 4.0)
+			if (key[KEY_RIGHT] && field.bouncer_x <= SCREEN_W - 20 * 4/*tamanho do bloco*/ - 4.0)
 			{
 				field.bouncer_x += 7.0;
+				field.cont++;
+				if (field.cont == 6)
+				{
+					field.cont = 0;
+					field.coluna++;
+					field.x_atual += field.larg;
+
+					if (field.coluna >= 4)
+					{
+						field.coluna = 0;
+						field.x_atual = 0;
+					}
+				}
 			}
 
 			flag.redraw = true;
@@ -191,8 +205,8 @@ void Game::run_game()
 			flag.redraw = false;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_hide_mouse_cursor(display.display);
-			al_draw_bitmap(environment.image, 0, 0, 0);
-			al_draw_bitmap_region(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, 0);
+			al_draw_scaled_bitmap(environment.image, 0, 0, 1024, 383, 0, 0, 1366, 768, 0);
+			al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 4, field.alt * 4, 0);
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0);
 			al_flip_display();
 		}

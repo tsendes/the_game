@@ -1,8 +1,8 @@
 #pragma once
 #include <allegro5/allegro.h>
 
-const int SCREEN_W = 640;
-const int SCREEN_H = 320;
+const int SCREEN_W = 1366;
+const int SCREEN_H = 766;
 
 class Display
 {
