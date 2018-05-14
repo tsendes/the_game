@@ -79,6 +79,7 @@ void Game::register_interrupts()
 void Game::draw_screen()
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0)); //fundo inicial preto
+	al_set_window_title(display.display, "Em caso de emergencia, pau no seu cu!"); //da um nome para a janela do jogo
 	al_draw_text(font.font, al_map_rgb(255, 255, 255), SCREEN_W / 2.0, SCREEN_H / 2.0, ALLEGRO_ALIGN_CENTER, "Carregando... Aguarde"); //printa na tela a msg
 
 	al_flip_display(); //troca o display visual pelo modificavel
@@ -141,7 +142,10 @@ void Game::run_game()
 					}
 				}
 			}
-
+			if (key[Z_KEY])
+			{	
+				flag.atk = true;
+			}
 			flag.redraw = true;
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) //evento de fechar a telinha
@@ -172,6 +176,9 @@ void Game::run_game()
 			case ALLEGRO_KEY_RIGHT:
 				key[KEY_RIGHT] = true;
 				break;
+			case ALLEGRO_KEY_Z:
+				key[Z_KEY] = true;
+				break;
 			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_UP) //evento de tecla solta
@@ -197,6 +204,9 @@ void Game::run_game()
 			case ALLEGRO_KEY_ESCAPE:
 				flag.doexit = true;
 				break;
+			case ALLEGRO_KEY_Z:
+				key[Z_KEY] = false;
+				break;
 			}
 		}
 
@@ -204,10 +214,15 @@ void Game::run_game()
 		{
 			flag.redraw = false;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
-			al_hide_mouse_cursor(display.display);
-			al_draw_scaled_bitmap(environment.image, 0, 0, 1024, 383, 0, 0, 1366, 768, 0);
-			al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 4, field.alt * 4, 0);
-			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0);
+			al_hide_mouse_cursor(display.display); //nome sugestivo
+			al_draw_scaled_bitmap(environment.image, 0, 0, 1024, 383, 0, 0, 1366, 768, 0); //background em escala
+			al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 4, field.alt * 4, 0); //Tatepon em escala
+			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
+			if (flag.atk == true)
+			{
+				al_draw_text(font.font, al_map_rgb(255, 255, 255), field.bouncer_y - 10.0, field.bouncer_y - 10.0, 0.0, "Atacando!");
+				flag.atk = false;
+			}
 			al_flip_display();
 		}
 	}

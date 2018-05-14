@@ -36,7 +36,7 @@ private:
 	Background environment; //plano de fundo da telinha
 	Keyboard keyboard; //coisas do teclado
 	Player field;  //blocos do jogo
-	bool key[4] = { false, false, false, false }; //funfa em combo com o MYKEYS
+	bool key[5] = { false, false, false, false, false }; //funfa em combo com o MYKEYS
 
 	
 };
