@@ -12,6 +12,8 @@ Game::Game()
 	environment.create_background();
 	keyboard.create_keyboard();
 	field.create_player();
+	block.create_field(0);
+	block2.create_field(800);
 
 	flag_init(); //inicializador de flags
 	error_check();
@@ -63,9 +65,17 @@ void Game::error_check()
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create timer!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
-	if (!field.field) //field block
+	if (!field.field) //Character
+	{
+		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+	}
+	if (!block.block)
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create field block!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+	}
+	if (!block2.block)
+	{
+		al_show_native_message_box(display.display, "Error", "Error", "failed to create field block2!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
 }
 
@@ -215,9 +225,12 @@ void Game::run_game()
 			flag.redraw = false;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_hide_mouse_cursor(display.display); //nome sugestivo
-			al_draw_scaled_bitmap(environment.image, 0, 0, 1024, 383, 0, 0, 1366, 768, 0); //background em escala
+			al_draw_scaled_bitmap(environment.image, 0, 0, /*1024*/1920, 1080 /*383*/, 0, 0, 1366, 768, 0); //background em escala
+			al_draw_bitmap(block.block, block.bouncer_x, block.bouncer_y, 0);
+			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
 			al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 4, field.alt * 4, 0); //Tatepon em escala
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
+			
 			if (flag.atk == true)
 			{
 				al_draw_text(font.font, al_map_rgb(255, 255, 255), field.bouncer_y - 10.0, field.bouncer_y - 10.0, 0.0, "Atacando!");

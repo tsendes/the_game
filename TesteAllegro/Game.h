@@ -6,6 +6,7 @@
 #include "Background.h"
 #include "Font.h"
 #include "Keyboard.h"
+#include "Block.h"
 
 //Control things
 #include "Flags.h"
@@ -35,7 +36,9 @@ private:
 	Font font; //fonte para escrita na telinha
 	Background environment; //plano de fundo da telinha
 	Keyboard keyboard; //coisas do teclado
-	Player field;  //blocos do jogo
+	Player field;  //personagens do jogo
+	Block block; //bloco de areia
+	Block block2; 
 	bool key[5] = { false, false, false, false, false }; //funfa em combo com o MYKEYS
 
 	

@@ -27,5 +27,5 @@ void Player::create_player()
 	x_atual = 0;
 	y_atual = 0;
 	bouncer_x = 2;
-	bouncer_y = 766/2;
+	bouncer_y = 766 - 65 - alt*4;
 }
