@@ -11,9 +11,10 @@ Game::Game()
 	font.create_font();
 	environment.create_background();
 	keyboard.create_keyboard();
-	field.create_player();
+	field.create_Lancer();
 	block.create_field(0);
 	block2.create_field(800);
+	knight.create_Knight();
 
 	flag_init(); //inicializador de flags
 	error_check();
@@ -69,6 +70,10 @@ void Game::error_check()
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
+	if (!knight.field) //Character
+	{
+		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+	}
 	if (!block.block)
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create field block!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -109,25 +114,34 @@ void Game::run_game()
 			if (key[KEY_UP] && field.bouncer_y >= 4.0)
 			{
 				field.bouncer_y -= 7.0;
+				knight.bouncer_y -= 7.0;
 			}
 
-			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 35 * 4 /*tamanho do bloco*/ - 4.0)
+			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 35 * 3 /*tamanho do bloco*/ - 4.0)
 			{
 				field.bouncer_y += 7.0;
+				knight.bouncer_y += 7.0;
 			}
 
 			if (key[KEY_LEFT] && field.bouncer_x >= 4.0)
 			{
 				field.bouncer_x -= 7.0;
 				field.cont++;
-				if (field.cont == 6)
+				knight.bouncer_x -= 7.0;
+				knight.cont++;
+				if (field.cont == 8)
 				{
 					field.cont = 0;
+					knight.cont = 0;
 					field.coluna++;
 					field.x_atual += field.larg;
+					knight.coluna++;
+					knight.x_atual += knight.larg;
 
 					if (field.coluna >= 4)
 					{
+						knight.coluna = 0;
+						knight.x_atual = 0;
 						field.coluna = 0;
 						field.x_atual = 0;
 					}
@@ -135,20 +149,27 @@ void Game::run_game()
 				
 			}
 
-			if (key[KEY_RIGHT] && field.bouncer_x <= SCREEN_W - 20 * 4/*tamanho do bloco*/ - 4.0)
+			if (key[KEY_RIGHT] && knight.bouncer_x <= SCREEN_W - 20 * 3/*tamanho do bloco*/ - 4.0)
 			{
 				field.bouncer_x += 7.0;
 				field.cont++;
-				if (field.cont == 6)
+				knight.bouncer_x += 7.0;
+				knight.cont++;
+				if (field.cont == 8)
 				{
 					field.cont = 0;
+					knight.cont = 0;
 					field.coluna++;
 					field.x_atual += field.larg;
+					knight.coluna++;
+					knight.x_atual += knight.larg;
 
 					if (field.coluna >= 4)
 					{
 						field.coluna = 0;
 						field.x_atual = 0;
+						knight.coluna = 0;
+						knight.x_atual = 0;
 					}
 				}
 			}
@@ -228,7 +249,8 @@ void Game::run_game()
 			al_draw_scaled_bitmap(environment.image, 0, 0, /*1024*/1920, 1080 /*383*/, 0, 0, 1366, 768, 0); //background em escala
 			al_draw_bitmap(block.block, block.bouncer_x, block.bouncer_y, 0);
 			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
-			al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 4, field.alt * 4, 0); //Tatepon em escala
+			al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 3, field.alt * 3, 0); //Tatepon em escala
+			al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); //Tatepon em escala
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
 			
 			if (flag.atk == true)

@@ -137,6 +137,8 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Knight.cpp" />
+    <ClCompile Include="Lancer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Flags.cpp" />
@@ -149,6 +151,8 @@
   <ItemGroup>
     <ClInclude Include="Background.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Knight.h" />
+    <ClInclude Include="Lancer.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="Enum.h" />
