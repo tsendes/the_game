@@ -111,19 +111,19 @@ void Game::run_game()
 		{
 			
 			
-			if (key[KEY_UP] && field.bouncer_y >= 4.0)
+			if (key[KEY_UP] && field.bouncer_y >= 4.0 && flag.atk == false)
 			{
 				field.bouncer_y -= 7.0;
 				knight.bouncer_y -= 7.0;
 			}
 
-			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 35 * 3 /*tamanho do bloco*/ - 4.0)
+			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 35 * 3 /*tamanho do bloco*/ - 4.0 && flag.atk == false)
 			{
 				field.bouncer_y += 7.0;
 				knight.bouncer_y += 7.0;
 			}
 
-			if (key[KEY_LEFT] && field.bouncer_x >= 4.0)
+			if (key[KEY_LEFT] && field.bouncer_x >= 4.0 && flag.atk == false)
 			{
 				field.bouncer_x -= 7.0;
 				field.cont++;
@@ -146,10 +146,9 @@ void Game::run_game()
 						field.x_atual = 0;
 					}
 				}
-				
 			}
 
-			if (key[KEY_RIGHT] && knight.bouncer_x <= SCREEN_W - 20 * 3/*tamanho do bloco*/ - 4.0)
+			if (key[KEY_RIGHT] && knight.bouncer_x <= SCREEN_W - 20 * 3/*tamanho do bloco*/ - 4.0 && flag.atk == false)
 			{
 				field.bouncer_x += 7.0;
 				field.cont++;
@@ -237,6 +236,7 @@ void Game::run_game()
 				break;
 			case ALLEGRO_KEY_Z:
 				key[Z_KEY] = false;
+				flag.atk = false;
 				break;
 			}
 		}
@@ -249,14 +249,32 @@ void Game::run_game()
 			al_draw_scaled_bitmap(environment.image, 0, 0, /*1024*/1920, 1080 /*383*/, 0, 0, 1366, 768, 0); //background em escala
 			al_draw_bitmap(block.block, block.bouncer_x, block.bouncer_y, 0);
 			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
-			al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 3, field.alt * 3, 0); //Tatepon em escala
-			al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); //Tatepon em escala
+			//al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 3, field.alt * 3, 0); //Tatepon em escala
+			//al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); //Tatepon em escala
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
 			
 			if (flag.atk == true)
 			{
-				al_draw_text(font.font, al_map_rgb(255, 255, 255), field.bouncer_y - 10.0, field.bouncer_y - 10.0, 0.0, "Atacando!");
-				flag.atk = false;
+				knight.field = al_load_bitmap("Attack_Sprite_Knight.png");
+				al_draw_scaled_bitmap(knight.field, knight.x_atk, knight.y_atk, knight.larg_atk, knight.alt_atk, knight.bouncer_x, knight.bouncer_y, knight.larg_atk * 3, knight.alt_atk * 3, 0);
+				al_draw_text(font.font, al_map_rgb(255, 255, 255), field.bouncer_x - 10.0, field.bouncer_y - 10.0, 0.0, "Atacando!");
+				knight.count_atk++;
+				if (knight.count_atk == 8)
+				{
+					knight.count_atk = 0;
+					knight.coluna_atk++;
+					knight.x_atk += knight.larg_atk;
+					if (knight.coluna_atk >= 3)
+					{
+						knight.coluna_atk = 0;
+						knight.x_atk = 0;
+					}
+				}
+			}
+			else
+			{
+				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
+				al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0);
 			}
 			al_flip_display();
 		}
