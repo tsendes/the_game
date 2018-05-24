@@ -26,4 +26,5 @@ void Knight::create_Knight()
 	count_atk = 0;
 	bouncer_x = 25 * 3;
 	bouncer_y = 766 - 65 - alt * 3;
+	pos_i = 766 - 65 - alt * 3;
 }

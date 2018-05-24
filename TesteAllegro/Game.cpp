@@ -102,25 +102,47 @@ void Game::draw_screen()
 }
 void Game::run_game()
 {
+	int timer = 0;
+	float adjust = 1.0;
 	while (!flag.doexit) //enquanto nao for decidido que é o fim do programa
 	{
 		ALLEGRO_EVENT ev;
+		
+		
 		al_wait_for_event(event_queue, &ev);
 
 		if (ev.type == ALLEGRO_EVENT_TIMER)  //dps que a tecla é pressionada rola isso aqui
 		{
 			
 			
-			if (key[KEY_UP] && field.bouncer_y >= 4.0 && flag.atk == false)
+			if (key[KEY_UP] && field.bouncer_y >= 4.0 && flag.atk == false && flag.exaust == false)
 			{
-				field.bouncer_y -= 7.0;
-				knight.bouncer_y -= 7.0;
+
+				timer += 1;
+				if (timer >= 5)
+				{
+					timer = 0;
+					adjust /= 1.5;
+				}
+				
+				field.bouncer_y -= 9.8 * adjust;
+				knight.bouncer_y -= 9.8 * adjust;
+				if (adjust <= 0.2)
+				{
+					flag.exaust = true;
+					key[KEY_UP] = false;
+					adjust = 1.0;
+					timer = 0;
+				}
 			}
 
 			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 35 * 3 /*tamanho do bloco*/ - 4.0 && flag.atk == false)
 			{
-				field.bouncer_y += 7.0;
-				knight.bouncer_y += 7.0;
+				if (knight.bouncer_y <= knight.pos_i)
+				{
+					field.bouncer_y += 7.0;
+					knight.bouncer_y += 7.0;
+				}
 			}
 
 			if (key[KEY_LEFT] && field.bouncer_x >= 4.0 && flag.atk == false)
@@ -176,6 +198,28 @@ void Game::run_game()
 			{	
 				flag.atk = true;
 			}
+			if (knight.bouncer_y < knight.pos_i && !key[KEY_UP])
+			{
+				timer+= 1;
+				if (timer >= 5)
+				{
+					timer = 0;
+					//adjust+=0.5;
+					adjust *= 1.5;
+				}
+				field.bouncer_y += ((9.8)*(adjust))/2;
+				knight.bouncer_y += ((9.8)*(adjust)) / 2;
+				if (knight.pos_i <= knight.bouncer_y)
+				{
+					flag.exaust = false;
+					adjust = 1.0;
+					timer = 0;
+				}
+				if (knight.pos_i < knight.bouncer_y)
+				{
+					knight.bouncer_y = knight.pos_i;
+				}
+			}
 			flag.redraw = true;
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) //evento de fechar a telinha
@@ -192,7 +236,10 @@ void Game::run_game()
 			switch (ev.keyboard.keycode)
 			{
 			case ALLEGRO_KEY_UP:
-				key[KEY_UP] = true;
+				if (flag.exaust == false)
+				{
+					key[KEY_UP] = true;
+				}
 				break;
 
 			case ALLEGRO_KEY_DOWN:
@@ -216,6 +263,7 @@ void Game::run_game()
 			switch (ev.keyboard.keycode)
 			{
 			case ALLEGRO_KEY_UP:
+				adjust = 1.0;
 				key[KEY_UP] = false;
 				break;
 
@@ -257,7 +305,7 @@ void Game::run_game()
 			{
 				knight.field = al_load_bitmap("Attack_Sprite_Knight.png");
 				al_draw_scaled_bitmap(knight.field, knight.x_atk, knight.y_atk, knight.larg_atk, knight.alt_atk, knight.bouncer_x, knight.bouncer_y, knight.larg_atk * 3, knight.alt_atk * 3, 0);
-				al_draw_text(font.font, al_map_rgb(255, 255, 255), field.bouncer_x - 10.0, field.bouncer_y - 10.0, 0.0, "Atacando!");
+				al_draw_text(font.font, al_map_rgb(255, 255, 255), knight.bouncer_x - 10.0, knight.bouncer_y - 10.0, 0.0, "Atacando!");
 				knight.count_atk++;
 				if (knight.count_atk == 8)
 				{
@@ -278,5 +326,6 @@ void Game::run_game()
 			}
 			al_flip_display();
 		}
+		//timer++;
 	}
 }

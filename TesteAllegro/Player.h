@@ -24,6 +24,7 @@ public:
 	int coluna_atk;
 	int x_atk; //posiçao x de ataque no mapa sprite
 	int y_atk; // posição y de ataque no mapa sprite
+	float pos_i;
 	
 	
 	Player();
