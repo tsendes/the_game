@@ -10,5 +10,5 @@ Background::~Background()
 }
 void Background::create_background()
 {
-	image = al_load_bitmap("Desert.png"); ///Background.png
+	image = al_load_bitmap("Desert.png"); ///Background.png //Fundo.png
 }

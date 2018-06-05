@@ -96,6 +96,7 @@ void Game::register_interrupts()
 	al_register_event_source(event_queue, al_get_mouse_event_source()); //add mouse na fila de geração de eventos
 	al_register_event_source(event_queue, al_get_keyboard_event_source()); //add teclado na fila de geração de eventos
 }
+
 void Game::draw_screen()
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0)); //fundo inicial preto
@@ -105,6 +106,7 @@ void Game::draw_screen()
 	al_flip_display(); //troca o display visual pelo modificavel
 	al_rest(1); //aguarda X segundos ate continuar
 }
+
 void Game::run_game()
 {
 	int timer = 0;
@@ -137,6 +139,7 @@ void Game::run_game()
 					adjust = 1.0;
 					timer = 0;
 				}
+					
 			}
 
 			/*if (key[KEY_DOWN] && Lancer.bouncer_y <= SCREEN_H - 35 * 3 /*tamanho do bloco*//* - 4.0 && flag.atk == false)
@@ -188,7 +191,7 @@ void Game::run_game()
 					knight.coluna++;
 					knight.x_atual += knight.larg;
 
-					if (Lancer.coluna >= 4)
+					if (knight.coluna >= 4 && Lancer.coluna >=4) //cuidado
 					{
 						Lancer.coluna = 0;
 						Lancer.x_atual = 0;
@@ -207,10 +210,9 @@ void Game::run_game()
 				if (timer >= 5)
 				{
 					timer = 0;
-					//adjust+=0.5;
 					adjust *= 1.5;
 				}
-				Lancer.bouncer_y += ((9.8)*(adjust))/2;
+				Lancer.bouncer_y += ((9.8)*(adjust)) / 2;
 				knight.bouncer_y += ((9.8)*(adjust)) / 2;
 				if (knight.pos_i <= knight.bouncer_y)
 				{
@@ -221,6 +223,7 @@ void Game::run_game()
 				if (knight.pos_i < knight.bouncer_y)
 				{
 					knight.bouncer_y = knight.pos_i;
+					Lancer.bouncer_y = Lancer.pos_i;
 				}
 			}
 			flag.redraw = true;
@@ -296,19 +299,19 @@ void Game::run_game()
 			flag.redraw = false;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_hide_mouse_cursor(display.display); //nome sugestivo
-			al_draw_scaled_bitmap(environment.image, 0, 0, /*1024*/1920, 1080 /*383*/, 0, 0, 1366, 768, 0); //background em escala
+			al_draw_scaled_bitmap(environment.image, 0, 0, /*1024*/1920/*900*/,/*449*/ 1080 /*383*/, 0, 0, 1366, 768, 0); //background em escala
 			al_draw_bitmap(block.block, block.bouncer_x, block.bouncer_y, 0);
 			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
-			//al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 3, field.alt * 3, 0); //Tatepon em escala
+			al_draw_scaled_bitmap(Lancer.field, Lancer.x_atual, Lancer.y_atual, Lancer.larg, Lancer.alt, Lancer.bouncer_x, Lancer.bouncer_y, Lancer.larg * 3, Lancer.alt * 3, 0); //Tatepon em escala
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
 			
 			if (flag.atk == true)
 			{
 				knight.field = al_load_bitmap("Attack_Sprite_Knight.png");
 				al_draw_scaled_bitmap(knight.field, knight.x_atk, knight.y_atk, knight.larg_atk, knight.alt_atk, knight.bouncer_x, knight.bouncer_y, knight.larg_atk * 3, knight.alt_atk * 3, 0);
-				al_draw_text(dialogo.font, al_map_rgb(255, 255, 255), knight.bouncer_x - 10.0, knight.bouncer_y - 10.0, 0.0, "Atacando!");
+				//al_draw_text(dialogo.font, al_map_rgb(255, 255, 255), knight.bouncer_x - 10.0, knight.bouncer_y - 10.0, 0.0, "Atacando!");
 				knight.count_atk++;
-				if (knight.count_atk == 8)
+				if (knight.count_atk == 4) //velocidade de ataque
 				{
 					knight.count_atk = 0;
 					knight.coluna_atk++;

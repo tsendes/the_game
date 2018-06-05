@@ -10,6 +10,6 @@ public:
 
 	//Block();
 	~Block();
-	void create_field(int x);
+	void create_field(int x, int y = 0);
 
 };
