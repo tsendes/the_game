@@ -30,11 +30,12 @@ private:
 	Display display; //telinha
 	Mouse mouse; //coisas do mouse
 	Font font; //fonte para escrita na telinha
+	Font dialogo;
 	Background environment; //plano de fundo da telinha
 	Keyboard keyboard; //coisas do teclado
-	Lancer field;  //personagem do jogo
+	Lancer Lancer;  //personagem do jogo
 	Block block; //bloco de areia
-	Block block2;
+	Block block2; // o segundo bloco
 	Knight knight;
 	bool key[9] = { false, false, false, false, false, false, false, false, false }; //funfa em combo com o MYKEYS
 

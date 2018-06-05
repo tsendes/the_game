@@ -11,10 +11,11 @@ Game::Game()
 	font.create_font();
 	environment.create_background();
 	keyboard.create_keyboard();
-	field.create_Lancer();
+	Lancer.create_Lancer();
 	block.create_field(0);
 	block2.create_field(800);
 	knight.create_Knight();
+	dialogo.create_Dialogo();
 
 	flag_init(); //inicializador de flags
 	error_check();
@@ -26,7 +27,7 @@ Game::Game()
 
 Game::~Game()
 {
-
+	// delete this;
 }
 
 void Game::addon_init()
@@ -66,7 +67,7 @@ void Game::error_check()
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create timer!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
-	if (!field.field) //Character
+	if (!Lancer.field) //Character
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
@@ -81,6 +82,10 @@ void Game::error_check()
 	if (!block2.block)
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create field block2!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+	}
+	if (!dialogo.font)
+	{
+		al_show_native_message_box(display.display, "Error", "Error", "failed to load dialogo!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
 }
 
@@ -107,15 +112,13 @@ void Game::run_game()
 	while (!flag.doexit) //enquanto nao for decidido que é o fim do programa
 	{
 		ALLEGRO_EVENT ev;
-		
-		
 		al_wait_for_event(event_queue, &ev);
 
 		if (ev.type == ALLEGRO_EVENT_TIMER)  //dps que a tecla é pressionada rola isso aqui
 		{
 			
 			
-			if (key[KEY_UP] && field.bouncer_y >= 4.0 && flag.atk == false && flag.exaust == false)
+			if (key[KEY_UP] && Lancer.bouncer_y >= 4.0 && flag.atk == false && flag.exaust == false)
 			{
 
 				timer += 1;
@@ -125,7 +128,7 @@ void Game::run_game()
 					adjust /= 1.5;
 				}
 				
-				field.bouncer_y -= 9.8 * adjust;
+				Lancer.bouncer_y -= 9.8 * adjust;
 				knight.bouncer_y -= 9.8 * adjust;
 				if (adjust <= 0.2)
 				{
@@ -136,59 +139,59 @@ void Game::run_game()
 				}
 			}
 
-			if (key[KEY_DOWN] && field.bouncer_y <= SCREEN_H - 35 * 3 /*tamanho do bloco*/ - 4.0 && flag.atk == false)
+			/*if (key[KEY_DOWN] && Lancer.bouncer_y <= SCREEN_H - 35 * 3 /*tamanho do bloco*//* - 4.0 && flag.atk == false)
 			{
 				if (knight.bouncer_y <= knight.pos_i)
 				{
-					field.bouncer_y += 7.0;
+					Lancer.bouncer_y += 7.0;
 					knight.bouncer_y += 7.0;
 				}
-			}
+			}*/
 
-			if (key[KEY_LEFT] && field.bouncer_x >= 4.0 && flag.atk == false)
+			if (key[KEY_LEFT] && Lancer.bouncer_x >= 4.0 && flag.atk == false)
 			{
-				field.bouncer_x -= 7.0;
-				field.cont++;
+				Lancer.bouncer_x -= 7.0;
+				Lancer.cont++;
 				knight.bouncer_x -= 7.0;
 				knight.cont++;
-				if (field.cont == 8)
+				if (Lancer.cont == 8)
 				{
-					field.cont = 0;
+					Lancer.cont = 0;
 					knight.cont = 0;
-					field.coluna++;
-					field.x_atual += field.larg;
+					Lancer.coluna++;
+					Lancer.x_atual += Lancer.larg;
 					knight.coluna++;
 					knight.x_atual += knight.larg;
 
-					if (field.coluna >= 4)
+					if (Lancer.coluna >= 4)
 					{
 						knight.coluna = 0;
 						knight.x_atual = 0;
-						field.coluna = 0;
-						field.x_atual = 0;
+						Lancer.coluna = 0;
+						Lancer.x_atual = 0;
 					}
 				}
 			}
 
 			if (key[KEY_RIGHT] && knight.bouncer_x <= SCREEN_W - 20 * 3/*tamanho do bloco*/ - 4.0 && flag.atk == false)
 			{
-				field.bouncer_x += 7.0;
-				field.cont++;
+				Lancer.bouncer_x += 7.0;
+				Lancer.cont++;
 				knight.bouncer_x += 7.0;
 				knight.cont++;
-				if (field.cont == 8)
+				if (Lancer.cont == 8)
 				{
-					field.cont = 0;
+					Lancer.cont = 0;
 					knight.cont = 0;
-					field.coluna++;
-					field.x_atual += field.larg;
+					Lancer.coluna++;
+					Lancer.x_atual += Lancer.larg;
 					knight.coluna++;
 					knight.x_atual += knight.larg;
 
-					if (field.coluna >= 4)
+					if (Lancer.coluna >= 4)
 					{
-						field.coluna = 0;
-						field.x_atual = 0;
+						Lancer.coluna = 0;
+						Lancer.x_atual = 0;
 						knight.coluna = 0;
 						knight.x_atual = 0;
 					}
@@ -207,7 +210,7 @@ void Game::run_game()
 					//adjust+=0.5;
 					adjust *= 1.5;
 				}
-				field.bouncer_y += ((9.8)*(adjust))/2;
+				Lancer.bouncer_y += ((9.8)*(adjust))/2;
 				knight.bouncer_y += ((9.8)*(adjust)) / 2;
 				if (knight.pos_i <= knight.bouncer_y)
 				{
@@ -263,7 +266,6 @@ void Game::run_game()
 			switch (ev.keyboard.keycode)
 			{
 			case ALLEGRO_KEY_UP:
-				adjust = 1.0;
 				key[KEY_UP] = false;
 				break;
 
@@ -298,14 +300,13 @@ void Game::run_game()
 			al_draw_bitmap(block.block, block.bouncer_x, block.bouncer_y, 0);
 			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
 			//al_draw_scaled_bitmap(field.field, field.x_atual, field.y_atual, field.larg, field.alt,field.bouncer_x, field.bouncer_y, field.larg * 3, field.alt * 3, 0); //Tatepon em escala
-			//al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); //Tatepon em escala
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
 			
 			if (flag.atk == true)
 			{
 				knight.field = al_load_bitmap("Attack_Sprite_Knight.png");
 				al_draw_scaled_bitmap(knight.field, knight.x_atk, knight.y_atk, knight.larg_atk, knight.alt_atk, knight.bouncer_x, knight.bouncer_y, knight.larg_atk * 3, knight.alt_atk * 3, 0);
-				al_draw_text(font.font, al_map_rgb(255, 255, 255), knight.bouncer_x - 10.0, knight.bouncer_y - 10.0, 0.0, "Atacando!");
+				al_draw_text(dialogo.font, al_map_rgb(255, 255, 255), knight.bouncer_x - 10.0, knight.bouncer_y - 10.0, 0.0, "Atacando!");
 				knight.count_atk++;
 				if (knight.count_atk == 8)
 				{
@@ -322,10 +323,9 @@ void Game::run_game()
 			else
 			{
 				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
-				al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0);
+				al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); //Tatepon em escala
 			}
 			al_flip_display();
 		}
-		//timer++;
 	}
 }

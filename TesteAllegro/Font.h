@@ -10,4 +10,5 @@ public:
 	Font();
 	~Font();
 	void create_font();
+	void create_Dialogo();
 };
