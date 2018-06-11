@@ -1,13 +1,10 @@
 #pragma once
 #include "Player.h"
 
-class Enemy : public Player
+class Enemy : public Character
 {
 public:
 	Enemy();
 	~Enemy();
-	char* name[30];
-	int life;
-	int damage;
 	
 };

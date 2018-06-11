@@ -10,7 +10,7 @@ Mouse::~Mouse()
 }
 void Mouse::create_mouse()
 {
-	mouse = al_load_bitmap("Human.png");
+	mouse = al_load_bitmap("Undead.png");
 	bouncer_x = 1366 / 2.0 - BOUNCER_SIZE / 2.0;
 	bouncer_y = 1366 / 2.0 - BOUNCER_SIZE / 2.0;
 }

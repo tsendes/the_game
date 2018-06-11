@@ -1,7 +1,7 @@
 #include "Enemy.h"
 Enemy::Enemy()
 {
-	field = al_load_bitmap("Enemy_Primary.png");
+	field = al_load_bitmap("Enemy_Ghost.png");
 	cont = 0;
 	coluna = 0;
 	larg = 20; // padronizar esses parametros para todas as sprites

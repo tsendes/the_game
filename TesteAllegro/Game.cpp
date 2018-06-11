@@ -17,7 +17,6 @@ Game::Game()
 	knight.create_Knight();
 	dialogo.create_Dialogo();
 
-	flag_init(); //inicializador de flags
 	error_check();
 	register_interrupts();
 	draw_screen();
@@ -100,7 +99,7 @@ void Game::register_interrupts()
 void Game::draw_screen()
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0)); //fundo inicial preto
-	al_set_window_title(display.display, "Em caso de emergencia, pau no seu cu!"); //da um nome para a janela do jogo
+	al_set_window_title(display.display, "Knights of Pixel"); //da um nome para a janela do jogo
 	al_draw_text(font.font, al_map_rgb(255, 255, 255), SCREEN_W / 2.0, SCREEN_H / 2.0, ALLEGRO_ALIGN_CENTER, "Carregando... Aguarde"); //printa na tela a msg
 
 	al_flip_display(); //troca o display visual pelo modificavel
@@ -120,7 +119,7 @@ void Game::run_game()
 		{
 			
 			
-			if (key[KEY_UP] && Lancer.bouncer_y >= 4.0 && flag.atk == false && flag.exaust == false)
+			if (key[KEY_UP] && Lancer.getBouncer_y() >= 4.0 && flag.exaust == false)
 			{
 
 				timer += 1;
@@ -130,8 +129,8 @@ void Game::run_game()
 					adjust /= 1.5;
 				}
 				
-				Lancer.bouncer_y -= 9.8 * adjust;
-				knight.bouncer_y -= 9.8 * adjust;
+				Lancer.setBouncer_y(Lancer.getBouncer_y() - 9.8 * adjust);
+				knight.setBouncer_y(knight.getBouncer_y() - 9.8 * adjust);
 				if (adjust <= 0.2)
 				{
 					flag.exaust = true;
@@ -142,7 +141,7 @@ void Game::run_game()
 					
 			}
 
-			/*if (key[KEY_DOWN] && Lancer.bouncer_y <= SCREEN_H - 35 * 3 /*tamanho do bloco*//* - 4.0 && flag.atk == false)
+			/*if (key[KEY_DOWN] && Lancer.bouncer_y <= SCREEN_H - 35 * 2 /*tamanho do bloco*//* - 4.0 && flag.atk == false)
 			{
 				if (knight.bouncer_y <= knight.pos_i)
 				{
@@ -151,60 +150,56 @@ void Game::run_game()
 				}
 			}*/
 
-			if (key[KEY_LEFT] && Lancer.bouncer_x >= 4.0 && flag.atk == false)
+			if (key[KEY_LEFT] && Lancer.getBouncer_x() >= 4.0)
 			{
-				Lancer.bouncer_x -= 7.0;
+				Lancer.setBouncer_x(Lancer.getBouncer_x() - 7.0);
 				Lancer.cont++;
-				knight.bouncer_x -= 7.0;
+				knight.setBouncer_x(knight.getBouncer_x() - 7.0);
 				knight.cont++;
 				if (Lancer.cont == 8)
 				{
 					Lancer.cont = 0;
 					knight.cont = 0;
 					Lancer.coluna++;
-					Lancer.x_atual += Lancer.larg;
+					Lancer.setX_atual(Lancer.getX_atual() + Lancer.getLarg());
 					knight.coluna++;
-					knight.x_atual += knight.larg;
+					knight.setX_atual(knight.getX_atual() + knight.getLarg());
 
 					if (Lancer.coluna >= 4)
 					{
 						knight.coluna = 0;
-						knight.x_atual = 0;
+						knight.setX_atual(0);
 						Lancer.coluna = 0;
-						Lancer.x_atual = 0;
+						Lancer.setX_atual(0);
 					}
 				}
 			}
 
-			if (key[KEY_RIGHT] && knight.bouncer_x <= SCREEN_W - 20 * 3/*tamanho do bloco*/ - 4.0 && flag.atk == false)
+			if (key[KEY_RIGHT] && knight.getBouncer_x() <= SCREEN_W - 20 * 3/*tamanho do bloco*/ - 4.0)
 			{
-				Lancer.bouncer_x += 7.0;
+				Lancer.setBouncer_x(Lancer.getBouncer_x() + 7.0);
 				Lancer.cont++;
-				knight.bouncer_x += 7.0;
+				knight.setBouncer_x(knight.getBouncer_x() + 7.0);
 				knight.cont++;
 				if (Lancer.cont == 8)
 				{
 					Lancer.cont = 0;
 					knight.cont = 0;
 					Lancer.coluna++;
-					Lancer.x_atual += Lancer.larg;
+					Lancer.setX_atual(Lancer.getX_atual() + Lancer.getLarg());
 					knight.coluna++;
-					knight.x_atual += knight.larg;
+					knight.setX_atual(knight.getX_atual() + knight.getLarg());
 
 					if (knight.coluna >= 4 && Lancer.coluna >=4) //cuidado
 					{
 						Lancer.coluna = 0;
-						Lancer.x_atual = 0;
+						Lancer.setX_atual(0);
 						knight.coluna = 0;
-						knight.x_atual = 0;
+						knight.setX_atual(0);
 					}
 				}
 			}
-			if (key[Z_KEY])
-			{	
-				flag.atk = true;
-			}
-			if (knight.bouncer_y < knight.pos_i && !key[KEY_UP])
+			if (knight.getBouncer_y() < knight.getPos_i() && !key[KEY_UP])
 			{
 				timer+= 1;
 				if (timer >= 5)
@@ -212,18 +207,18 @@ void Game::run_game()
 					timer = 0;
 					adjust *= 1.5;
 				}
-				Lancer.bouncer_y += ((9.8)*(adjust)) / 2;
-				knight.bouncer_y += ((9.8)*(adjust)) / 2;
-				if (knight.pos_i <= knight.bouncer_y)
+				Lancer.setBouncer_y(Lancer.getBouncer_y() + ((9.8)*(adjust)) / 2);
+				knight.setBouncer_y(knight.getBouncer_y() + ((9.8)*(adjust)) / 2);
+				if (knight.getPos_i() <= knight.getBouncer_y())
 				{
 					flag.exaust = false;
 					adjust = 1.0;
 					timer = 0;
 				}
-				if (knight.pos_i < knight.bouncer_y)
+				if (knight.getPos_i() < knight.getBouncer_y())
 				{
-					knight.bouncer_y = knight.pos_i;
-					Lancer.bouncer_y = Lancer.pos_i;
+					knight.setBouncer_y(knight.getPos_i());
+					Lancer.setBouncer_y(Lancer.getPos_i());
 				}
 			}
 			flag.redraw = true;
@@ -261,6 +256,11 @@ void Game::run_game()
 				break;
 			case ALLEGRO_KEY_Z:
 				key[Z_KEY] = true;
+				flag.atk = true;
+				break;
+			case ALLEGRO_KEY_X:
+				key[X_KEY] = true;
+				flag.atk_x = true;
 				break;
 			}
 		}
@@ -291,6 +291,9 @@ void Game::run_game()
 				key[Z_KEY] = false;
 				flag.atk = false;
 				break;
+			case ALLEGRO_KEY_X:
+				key[X_KEY] = false;
+				flag.atk_x = false;
 			}
 		}
 
@@ -302,31 +305,52 @@ void Game::run_game()
 			al_draw_scaled_bitmap(environment.image, 0, 0, /*1024*/1920/*900*/,/*449*/ 1080 /*383*/, 0, 0, 1366, 768, 0); //background em escala
 			al_draw_bitmap(block.block, block.bouncer_x, block.bouncer_y, 0);
 			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
-			al_draw_scaled_bitmap(Lancer.field, Lancer.x_atual, Lancer.y_atual, Lancer.larg, Lancer.alt, Lancer.bouncer_x, Lancer.bouncer_y, Lancer.larg * 3, Lancer.alt * 3, 0); //Tatepon em escala
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
-			
-			if (flag.atk == true)
+			if (flag.atk_x == true && flag.atk == false) //atk Lancer
+			{
+				Lancer.field = al_load_bitmap("Attack_Sprite_Lancer.png");
+				al_draw_scaled_bitmap(Lancer.field, Lancer.getX_atk(), Lancer.getY_atk(), Lancer.getLarg_atk(), Lancer.getAlt_atk(), Lancer.getBouncer_x(), Lancer.getBouncer_y(), Lancer.getLarg_atk() * 3, Lancer.getAlt_atk() * 3, 0);
+				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
+				al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, 0);
+				Lancer.count_atk++;
+				if (Lancer.count_atk == 8)
+				{
+					Lancer.count_atk = 0;
+					Lancer.coluna_atk++;
+					Lancer.setX_atk(Lancer.getX_atk() + Lancer.getLarg_atk());
+					if (Lancer.coluna_atk >= 3)
+					{
+						Lancer.coluna_atk = 0;
+						Lancer.setX_atk(0);
+					}
+				}
+			}
+			if (flag.atk == true && flag.atk_x == false) //Atk Knight
 			{
 				knight.field = al_load_bitmap("Attack_Sprite_Knight.png");
-				al_draw_scaled_bitmap(knight.field, knight.x_atk, knight.y_atk, knight.larg_atk, knight.alt_atk, knight.bouncer_x, knight.bouncer_y, knight.larg_atk * 3, knight.alt_atk * 3, 0);
-				//al_draw_text(dialogo.font, al_map_rgb(255, 255, 255), knight.bouncer_x - 10.0, knight.bouncer_y - 10.0, 0.0, "Atacando!");
+				al_draw_scaled_bitmap(knight.field, knight.getX_atk(), knight.getY_atk(), knight.getLarg_atk(), knight.getAlt_atk(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg_atk() * 3, knight.getAlt_atk() * 3, 0);
+				Lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
+				al_draw_scaled_bitmap(Lancer.field, Lancer.getX_atual(), Lancer.getY_atual(), Lancer.getLarg(), Lancer.getAlt(), Lancer.getBouncer_x(), Lancer.getBouncer_y(), Lancer.getLarg() * 3, Lancer.getAlt() * 3, 0);
 				knight.count_atk++;
 				if (knight.count_atk == 4) //velocidade de ataque
 				{
 					knight.count_atk = 0;
 					knight.coluna_atk++;
-					knight.x_atk += knight.larg_atk;
+					knight.setX_atk(knight.getX_atk() + knight.getLarg_atk());
 					if (knight.coluna_atk >= 3)
 					{
 						knight.coluna_atk = 0;
-						knight.x_atk = 0;
+						knight.setX_atk(0);
 					}
 				}
 			}
-			else
+
+			if((flag.atk == false && flag.atk_x == false) || (flag.atk == true && flag.atk_x == true))
 			{
+				Lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
+				al_draw_scaled_bitmap(Lancer.field, Lancer.getX_atual(), Lancer.getY_atual(), Lancer.getLarg(), Lancer.getAlt(), Lancer.getBouncer_x(), Lancer.getBouncer_y(), Lancer.getLarg() * 3, Lancer.getAlt() * 3, 0);
 				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
-				al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); al_draw_scaled_bitmap(knight.field, knight.x_atual, knight.y_atual, knight.larg, knight.alt, knight.bouncer_x, knight.bouncer_y, knight.larg * 3, knight.alt * 3, 0); //Tatepon em escala
+				al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, 0);
 			}
 			al_flip_display();
 		}
