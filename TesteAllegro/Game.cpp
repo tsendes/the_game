@@ -11,12 +11,11 @@ Game::Game()
 	font.create_font();
 	environment.create_background();
 	keyboard.create_keyboard();
-	Lancer.create_Lancer();
 	block.create_field(0);
 	block2.create_field(800);
-	knight.create_Knight();
 	dialogo.create_Dialogo();
-
+	knight.create_Knight();
+	banner.create_Banner();
 	error_check();
 	register_interrupts();
 	draw_screen();
@@ -66,11 +65,15 @@ void Game::error_check()
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create timer!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
-	if (!Lancer.field) //Character
+	if (!lancer.field) //Character
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
 	if (!knight.field) //Character
+	{
+		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+	}
+	if (!banner.field) //Character
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
@@ -117,111 +120,9 @@ void Game::run_game()
 
 		if (ev.type == ALLEGRO_EVENT_TIMER)  //dps que a tecla é pressionada rola isso aqui
 		{
-			
-			
-			if (key[KEY_UP] && Lancer.getBouncer_y() >= 4.0 && flag.exaust == false)
-			{
-
-				timer += 1;
-				if (timer >= 5)
-				{
-					timer = 0;
-					adjust /= 1.5;
-				}
-				
-				Lancer.setBouncer_y(Lancer.getBouncer_y() - 9.8 * adjust);
-				knight.setBouncer_y(knight.getBouncer_y() - 9.8 * adjust);
-				if (adjust <= 0.2)
-				{
-					flag.exaust = true;
-					key[KEY_UP] = false;
-					adjust = 1.0;
-					timer = 0;
-				}
-					
-			}
-
-			/*if (key[KEY_DOWN] && Lancer.bouncer_y <= SCREEN_H - 35 * 2 /*tamanho do bloco*//* - 4.0 && flag.atk == false)
-			{
-				if (knight.bouncer_y <= knight.pos_i)
-				{
-					Lancer.bouncer_y += 7.0;
-					knight.bouncer_y += 7.0;
-				}
-			}*/
-
-			if (key[KEY_LEFT] && Lancer.getBouncer_x() >= 4.0)
-			{
-				Lancer.setBouncer_x(Lancer.getBouncer_x() - 7.0);
-				Lancer.cont++;
-				knight.setBouncer_x(knight.getBouncer_x() - 7.0);
-				knight.cont++;
-				if (Lancer.cont == 8)
-				{
-					Lancer.cont = 0;
-					knight.cont = 0;
-					Lancer.coluna++;
-					Lancer.setX_atual(Lancer.getX_atual() + Lancer.getLarg());
-					knight.coluna++;
-					knight.setX_atual(knight.getX_atual() + knight.getLarg());
-
-					if (Lancer.coluna >= 4)
-					{
-						knight.coluna = 0;
-						knight.setX_atual(0);
-						Lancer.coluna = 0;
-						Lancer.setX_atual(0);
-					}
-				}
-			}
-
-			if (key[KEY_RIGHT] && knight.getBouncer_x() <= SCREEN_W - 20 * 3/*tamanho do bloco*/ - 4.0)
-			{
-				Lancer.setBouncer_x(Lancer.getBouncer_x() + 7.0);
-				Lancer.cont++;
-				knight.setBouncer_x(knight.getBouncer_x() + 7.0);
-				knight.cont++;
-				if (Lancer.cont == 8)
-				{
-					Lancer.cont = 0;
-					knight.cont = 0;
-					Lancer.coluna++;
-					Lancer.setX_atual(Lancer.getX_atual() + Lancer.getLarg());
-					knight.coluna++;
-					knight.setX_atual(knight.getX_atual() + knight.getLarg());
-
-					if (knight.coluna >= 4 && Lancer.coluna >=4) //cuidado
-					{
-						Lancer.coluna = 0;
-						Lancer.setX_atual(0);
-						knight.coluna = 0;
-						knight.setX_atual(0);
-					}
-				}
-			}
-			if (knight.getBouncer_y() < knight.getPos_i() && !key[KEY_UP])
-			{
-				timer+= 1;
-				if (timer >= 5)
-				{
-					timer = 0;
-					adjust *= 1.5;
-				}
-				Lancer.setBouncer_y(Lancer.getBouncer_y() + ((9.8)*(adjust)) / 2);
-				knight.setBouncer_y(knight.getBouncer_y() + ((9.8)*(adjust)) / 2);
-				if (knight.getPos_i() <= knight.getBouncer_y())
-				{
-					flag.exaust = false;
-					adjust = 1.0;
-					timer = 0;
-				}
-				if (knight.getPos_i() < knight.getBouncer_y())
-				{
-					knight.setBouncer_y(knight.getPos_i());
-					Lancer.setBouncer_y(Lancer.getPos_i());
-				}
-			}
-			flag.redraw = true;
+			knight.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust);
+			lancer.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust);
+			banner.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust);
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) //evento de fechar a telinha
 		{
@@ -302,55 +203,26 @@ void Game::run_game()
 			flag.redraw = false;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_hide_mouse_cursor(display.display); //nome sugestivo
-			al_draw_scaled_bitmap(environment.image, 0, 0, /*1024*/1920/*900*/,/*449*/ 1080 /*383*/, 0, 0, 1366, 768, 0); //background em escala
+			al_draw_scaled_bitmap(environment.image, 0, 0, 1920, 1080, 0, 0, 1366, 768, 0); //background em escala
 			al_draw_bitmap(block.block, block.bouncer_x, block.bouncer_y, 0);
 			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
-			if (flag.atk_x == true && flag.atk == false) //atk Lancer
-			{
-				Lancer.field = al_load_bitmap("Attack_Sprite_Lancer.png");
-				al_draw_scaled_bitmap(Lancer.field, Lancer.getX_atk(), Lancer.getY_atk(), Lancer.getLarg_atk(), Lancer.getAlt_atk(), Lancer.getBouncer_x(), Lancer.getBouncer_y(), Lancer.getLarg_atk() * 3, Lancer.getAlt_atk() * 3, 0);
-				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
-				al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, 0);
-				Lancer.count_atk++;
-				if (Lancer.count_atk == 8)
-				{
-					Lancer.count_atk = 0;
-					Lancer.coluna_atk++;
-					Lancer.setX_atk(Lancer.getX_atk() + Lancer.getLarg_atk());
-					if (Lancer.coluna_atk >= 3)
-					{
-						Lancer.coluna_atk = 0;
-						Lancer.setX_atk(0);
-					}
-				}
-			}
-			if (flag.atk == true && flag.atk_x == false) //Atk Knight
-			{
-				knight.field = al_load_bitmap("Attack_Sprite_Knight.png");
-				al_draw_scaled_bitmap(knight.field, knight.getX_atk(), knight.getY_atk(), knight.getLarg_atk(), knight.getAlt_atk(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg_atk() * 3, knight.getAlt_atk() * 3, 0);
-				Lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
-				al_draw_scaled_bitmap(Lancer.field, Lancer.getX_atual(), Lancer.getY_atual(), Lancer.getLarg(), Lancer.getAlt(), Lancer.getBouncer_x(), Lancer.getBouncer_y(), Lancer.getLarg() * 3, Lancer.getAlt() * 3, 0);
-				knight.count_atk++;
-				if (knight.count_atk == 4) //velocidade de ataque
-				{
-					knight.count_atk = 0;
-					knight.coluna_atk++;
-					knight.setX_atk(knight.getX_atk() + knight.getLarg_atk());
-					if (knight.coluna_atk >= 3)
-					{
-						knight.coluna_atk = 0;
-						knight.setX_atk(0);
-					}
-				}
-			}
 
-			if((flag.atk == false && flag.atk_x == false) || (flag.atk == true && flag.atk_x == true))
+			knight.attack(&flag.atk, &flag.atk_x);
+			lancer.attack(&flag.atk, &flag.atk_x);
+			//banner.attack();
+			
+			if ((flag.atk == false && flag.atk_x == false) || (flag.atk == true && flag.atk_x == true))
 			{
-				Lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
-				al_draw_scaled_bitmap(Lancer.field, Lancer.getX_atual(), Lancer.getY_atual(), Lancer.getLarg(), Lancer.getAlt(), Lancer.getBouncer_x(), Lancer.getBouncer_y(), Lancer.getLarg() * 3, Lancer.getAlt() * 3, 0);
+				al_destroy_bitmap(knight.field);
+				al_destroy_bitmap(lancer.field);
+				al_destroy_bitmap(banner.field);
+				lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
+				al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, 0);
 				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
 				al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, 0);
+				banner.field = al_load_bitmap("Walk_Sprite_Banner.png");
+				al_draw_scaled_bitmap(banner.field, banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), banner.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, 0);
 			}
 			al_flip_display();
 		}

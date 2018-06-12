@@ -10,9 +10,9 @@ public:
 	Boss();
 	~Boss();
 	void create_Boss();
-	void move();
+	//void move();
 	void boss_Ult();
-	void attack();
+	//void attack();
 	void setDamage_Ult(float dmg);
 	float getDamage_Ult();
 	void setCharge_Bar(int bar);

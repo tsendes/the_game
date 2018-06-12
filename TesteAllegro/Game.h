@@ -19,9 +19,6 @@
 #include "Object.h"
 #include <string.h>
 
-const float FPS = 60; //nao precisa explicar isso neh?
-
-
 class Game
 {
 
@@ -30,7 +27,10 @@ private:
 	void register_interrupts();
 	void draw_screen();
 	void run_game();
-	
+	float FPS = 60; //nao precisa explicar isso neh?
+	int SCREEN_W = 1366;
+	int SCREEN_H = 766;
+
 	//Stranger things
 	ALLEGRO_EVENT_QUEUE *event_queue; //inicia uma fila de eventos
 	ALLEGRO_TIMER *tick_s; //temporizador
@@ -40,10 +40,12 @@ private:
 	Font dialogo;
 	Background environment; //plano de fundo da telinha
 	Keyboard keyboard; //coisas do teclado
-	Lancer Lancer;  //personagem do jogo
+	
 	Block block; //bloco de areia
 	Block block2; // o segundo bloco
 	Knight knight;
+	Banner banner;
+	Lancer lancer;
 	
 
 public:

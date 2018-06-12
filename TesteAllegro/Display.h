@@ -1,9 +1,6 @@
 #pragma once
 #include <allegro5/allegro.h>
 
-const int SCREEN_W = 1366;
-const int SCREEN_H = 766;
-
 class Display
 {
 public:
@@ -11,4 +8,6 @@ public:
 	Display();
 	~Display();
 	void create_display();
+	const int SCREEN_W = 1366;
+	const int SCREEN_H = 766;
 };

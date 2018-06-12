@@ -6,7 +6,7 @@ Entity::Entity()
 
 Entity::~Entity()
 {
-	//al_destroy_bitmap(field);
+
 }
 
 void Entity::setBouncer_x(float x)

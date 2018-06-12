@@ -9,8 +9,8 @@ private:
 public:
 	void setName(char* nameN);
 	char* getName();
-	//virtual void move();
-	//virtual void attack();
+	//virtual void move() = 0;
+	//virtual void attack() = 0;
 	Player();
 	~Player();
 };

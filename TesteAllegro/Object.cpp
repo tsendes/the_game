@@ -14,10 +14,10 @@ void Object::create_Object()
 {
 	
 }
-//void Entity::move()
-//{
-//
-//}
+void Object::move()
+{
+
+}
 void Object::setDamage_Obj(int dmg)
 {
 	damage_obj = dmg;

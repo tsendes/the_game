@@ -25,7 +25,7 @@ public:
 	void setY_atk(int y_atkN);
 	int getY_atk();
 
-	//virtual void move();
-	//virtual void attack();
+	//virtual void move() = 0;
+	virtual void attack();
 	
 };

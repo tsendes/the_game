@@ -35,5 +35,11 @@ public:
 	float getPos_i();
 	void setLife(float life);
 	float getLife();
-	//virtual void move();
+	virtual void move() = 0;
+
+	enum MYKEYS
+	{
+		KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, Z_KEY, X_KEY, I_KEY, K_KEY, J_KEY, L_KEY
+	};
+	bool key[10] = { false, false, false, false, false, false, false, false, false, false }; //funfa em combo com o MYKEYS
 };
