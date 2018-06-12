@@ -14,11 +14,7 @@ void Barbarian::create_Barbarian()
 
 }
 
-//void Entity::move()
-//{
-//
-//Banner::}
-//void Character::attack()
-//{
-//
-//}
+void Barbarian::attackEnemy()
+{
+
+}

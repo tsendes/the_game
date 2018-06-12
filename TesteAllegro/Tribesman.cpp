@@ -13,11 +13,11 @@ void Tribesman::create_Tribesman()
 {
 
 }
-//void Entity::move()
-//{
-//
-//}
-//void Character::attack()
-//{
-//
-//}
+void Tribesman::move()
+{
+
+}
+void Tribesman::attackEnemy()
+{
+
+}

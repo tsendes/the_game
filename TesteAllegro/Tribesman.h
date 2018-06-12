@@ -9,6 +9,6 @@ public:
 	Tribesman();
 	~Tribesman();
 	void create_Tribesman();
-	//void move();
-	//void attack();
+	void move();
+	void attackEnemy();
 };

@@ -9,7 +9,7 @@ private:
 public:
 	void setName(char* nameN);
 	char* getName();
-	//virtual void move() = 0;
+	void move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* redraw, bool* exaust, bool* key);
 	//virtual void attack() = 0;
 	Player();
 	~Player();

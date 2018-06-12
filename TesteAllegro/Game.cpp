@@ -16,6 +16,7 @@ Game::Game()
 	dialogo.create_Dialogo();
 	knight.create_Knight();
 	banner.create_Banner();
+	lancer.create_Lancer();
 	error_check();
 	register_interrupts();
 	draw_screen();
@@ -120,9 +121,9 @@ void Game::run_game()
 
 		if (ev.type == ALLEGRO_EVENT_TIMER)  //dps que a tecla é pressionada rola isso aqui
 		{
-			knight.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust);
-			lancer.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust);
-			banner.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust);
+			knight.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust, key);
+			lancer.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust, key);
+			banner.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust, key);
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) //evento de fechar a telinha
 		{
@@ -208,9 +209,52 @@ void Game::run_game()
 			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
 
+			if (flag.atk_x == true && flag.atk == false) //atk Lancer
+			{
+				al_destroy_bitmap(knight.field);
+				al_destroy_bitmap(lancer.field);
+				lancer.field = al_load_bitmap("Attack_Sprite_Lancer.png");
+				al_draw_scaled_bitmap(lancer.field, lancer.getX_atk(), lancer.getY_atk(), lancer.getLarg_atk(), lancer.getAlt_atk(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg_atk() * 3, lancer.getAlt_atk() * 3, 0);
+				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
+				al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, 0);
+				lancer.count_atk++;
+				if (lancer.count_atk == 8)
+				{
+					lancer.count_atk = 0;
+					lancer.coluna_atk++;
+					lancer.setX_atk(lancer.getX_atk() + lancer.getLarg_atk());
+					if (lancer.coluna_atk >= 3)
+					{
+						lancer.coluna_atk = 0;
+						lancer.setX_atk(0);
+					}
+				}
+			}
+			if (flag.atk == true && flag.atk_x == false) //Atk Knight
+			{
+				al_destroy_bitmap(knight.field);
+				al_destroy_bitmap(lancer.field);
+				knight.field = al_load_bitmap("Attack_Sprite_Knight.png");
+				al_draw_scaled_bitmap(knight.field, knight.getX_atk(), knight.getY_atk(), knight.getLarg_atk(), knight.getAlt_atk(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg_atk() * 3, knight.getAlt_atk() * 3, 0);
+				lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
+				al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, 0);
+				knight.count_atk++;
+				if (knight.count_atk == 4) //velocidade de ataque
+				{
+					knight.count_atk = 0;
+					knight.coluna_atk++;
+					knight.setX_atk(knight.getX_atk() + knight.getLarg_atk());
+					if (knight.coluna_atk >= 3)
+					{
+						knight.coluna_atk = 0;
+						knight.setX_atk(0);
+					}
+				}
+			}
+
 			knight.attack(&flag.atk, &flag.atk_x);
 			lancer.attack(&flag.atk, &flag.atk_x);
-			//banner.attack();
+			banner.attack(&flag.atk, &flag.atk_x);
 			
 			if ((flag.atk == false && flag.atk_x == false) || (flag.atk == true && flag.atk_x == true))
 			{
@@ -218,11 +262,11 @@ void Game::run_game()
 				al_destroy_bitmap(lancer.field);
 				al_destroy_bitmap(banner.field);
 				lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
-				al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, 0);
+				al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, key[KEY_LEFT] ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
-				al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, 0);
+				al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, key[KEY_LEFT] ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				banner.field = al_load_bitmap("Walk_Sprite_Banner.png");
-				al_draw_scaled_bitmap(banner.field, banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), banner.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, 0);
+				al_draw_scaled_bitmap(banner.field, banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), banner.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, key[KEY_LEFT] ? ALLEGRO_FLIP_HORIZONTAL : 0);
 			}
 			al_flip_display();
 		}

@@ -10,5 +10,5 @@ public:
 	Banner();
 	~Banner();
 	void create_Banner();
-	void move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* redraw, bool* exaust);
+	void attack(bool* atk, bool* atk_x);
 };
