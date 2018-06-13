@@ -40,12 +40,18 @@ private:
 	Font dialogo;
 	Background environment; //plano de fundo da telinha
 	Keyboard keyboard; //coisas do teclado
-	
 	Block block; //bloco de areia
 	Block block2; // o segundo bloco
+
+//Jogador--------------------------------------------------//
 	Knight knight;
 	Banner banner;
 	Lancer lancer;
+
+//Inimigos--------------------------------------------------//
+	Ghost ghost;
+	Barbarian barbarian;
+	Tribesman tribesman;
 	
 
 public:

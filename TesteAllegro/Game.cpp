@@ -17,6 +17,9 @@ Game::Game()
 	knight.create_Knight();
 	banner.create_Banner();
 	lancer.create_Lancer();
+	ghost.create_Ghost();
+	barbarian.create_Barbarian();
+	tribesman.create_Tribesman();
 	error_check();
 	register_interrupts();
 	draw_screen();
@@ -118,7 +121,7 @@ void Game::run_game()
 	{
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
-
+		
 		if (ev.type == ALLEGRO_EVENT_TIMER)  //dps que a tecla é pressionada rola isso aqui
 		{
 			knight.move(&timer, &adjust, SCREEN_W, SCREEN_H, &flag.redraw, &flag.exaust, key);
@@ -209,6 +212,13 @@ void Game::run_game()
 			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
 
+			al_draw_scaled_bitmap(ghost.field, ghost.getX_atual(), ghost.getY_atual(), ghost.getLarg(), ghost.getAlt(), ghost.getBouncer_x(), ghost.getBouncer_y(), ghost.getLarg() * 2, ghost.getAlt() * 2, knight.getBouncer_x() - ghost.getBouncer_x() > 0 ? ALLEGRO_FLIP_HORIZONTAL : 0);
+			ghost.moveEnemy(knight.getBouncer_x(), knight.getBouncer_y());
+			al_draw_scaled_bitmap(tribesman.field, tribesman.getX_atual(), tribesman.getY_atual(), tribesman.getLarg(), tribesman.getAlt(), tribesman.getBouncer_x(), tribesman.getBouncer_y(), tribesman.getLarg() * 3, tribesman.getAlt() * 3, knight.getBouncer_x() - tribesman.getBouncer_x() > 0 ? 0 : ALLEGRO_FLIP_HORIZONTAL);
+			tribesman.moveEnemy(knight.getBouncer_x(), knight.getBouncer_y());
+			al_draw_scaled_bitmap(barbarian.field, barbarian.getX_atual(), barbarian.getY_atual(), barbarian.getLarg(), barbarian.getAlt(), barbarian.getBouncer_x(), barbarian.getBouncer_y(), barbarian.getLarg() * 3, barbarian.getAlt() * 3, knight.getBouncer_x() - barbarian.getBouncer_x() > 0 ? 0 : ALLEGRO_FLIP_HORIZONTAL);
+			barbarian.moveEnemy(knight.getBouncer_x(), knight.getBouncer_y());
+
 			if (flag.atk_x == true && flag.atk == false) //atk Lancer
 			{
 				al_destroy_bitmap(knight.field);
@@ -216,7 +226,7 @@ void Game::run_game()
 				lancer.field = al_load_bitmap("Attack_Sprite_Lancer.png");
 				al_draw_scaled_bitmap(lancer.field, lancer.getX_atk(), lancer.getY_atk(), lancer.getLarg_atk(), lancer.getAlt_atk(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg_atk() * 3, lancer.getAlt_atk() * 3, 0);
 				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
-				al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, 0);
+				al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, key[KEY_LEFT] ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				lancer.count_atk++;
 				if (lancer.count_atk == 8)
 				{
@@ -235,9 +245,9 @@ void Game::run_game()
 				al_destroy_bitmap(knight.field);
 				al_destroy_bitmap(lancer.field);
 				knight.field = al_load_bitmap("Attack_Sprite_Knight.png");
-				al_draw_scaled_bitmap(knight.field, knight.getX_atk(), knight.getY_atk(), knight.getLarg_atk(), knight.getAlt_atk(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg_atk() * 3, knight.getAlt_atk() * 3, 0);
+				al_draw_scaled_bitmap(knight.field, knight.getX_atk(), knight.getY_atk(), knight.getLarg_atk(), knight.getAlt_atk(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg_atk() * 3, knight.getAlt_atk() * 3, key[KEY_LEFT] ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
-				al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, 0);
+				al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, key[KEY_LEFT] ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				knight.count_atk++;
 				if (knight.count_atk == 4) //velocidade de ataque
 				{
@@ -252,9 +262,9 @@ void Game::run_game()
 				}
 			}
 
-			knight.attack(&flag.atk, &flag.atk_x);
-			lancer.attack(&flag.atk, &flag.atk_x);
-			banner.attack(&flag.atk, &flag.atk_x);
+			knight.attack(&flag.atk, &flag.atk_x, key);
+			lancer.attack(&flag.atk, &flag.atk_x, key);
+			banner.attack(&flag.atk, &flag.atk_x, key);
 			
 			if ((flag.atk == false && flag.atk_x == false) || (flag.atk == true && flag.atk_x == true))
 			{

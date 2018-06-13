@@ -10,5 +10,5 @@ public:
 	Banner();
 	~Banner();
 	void create_Banner();
-	void attack(bool* atk, bool* atk_x);
+	void attack(bool* atk, bool* atk_x, bool* key);
 };

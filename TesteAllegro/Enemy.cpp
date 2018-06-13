@@ -22,3 +22,13 @@ Enemy::~Enemy()
 {
 
 }
+
+bool Enemy::has_vision(float vision)
+{
+	if (vision <= 1366 / 3)
+	{
+		return true;
+	}
+	else
+		return false;
+}

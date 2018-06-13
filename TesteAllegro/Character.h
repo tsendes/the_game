@@ -26,6 +26,6 @@ public:
 	int getY_atk();
 
 	//virtual void move() = 0;
-	virtual void attack(bool* atk, bool* atk_x) = 0;
+	
 	
 };

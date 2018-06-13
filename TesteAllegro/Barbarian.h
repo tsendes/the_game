@@ -9,6 +9,6 @@ public:
 	Barbarian();
 	~Barbarian();
 	void create_Barbarian();
-	void move();
+	void moveEnemy(float x, float y);
 	void attackEnemy();
 };

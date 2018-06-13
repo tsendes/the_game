@@ -35,7 +35,6 @@ public:
 	float getPos_i();
 	void setLife(float life);
 	float getLife();
-	virtual void move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* redraw, bool* exaust, bool* key) = 0;
 
 	enum MYKEYS
 	{

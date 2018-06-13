@@ -5,10 +5,12 @@ class Enemy : public Character
 {
 protected:
 	char name[30];
-	bool has_vision;
+	int invert;
 public:
 	Enemy();
 	~Enemy();
 
-	virtual void attackEnemmy() = 0;
+	virtual void moveEnemy(float x, float y) {}
+	virtual void attackEnemy() = 0;
+	bool has_vision(float vision);
 };
