@@ -1,2 +1,7 @@
-﻿  Barbarian.cpp
-  TesteAllegro.vcxproj -> C:\Users\leofi\Desktop\Tecprog\Trabalho\the_game\Debug\TesteAllegro.exe
+﻿  Game.cpp
+c:\git\the_game\testeallegro\ghost.h(4): warning C4005: 'SPEED': macro redefinition
+  c:\git\the_game\testeallegro\humanoid.h(4): note: see previous definition of 'SPEED'
+c:\git\the_game\testeallegro\game.cpp(255): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\git\the_game\testeallegro\game.cpp(256): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\git\the_game\testeallegro\game.cpp(156): warning C4477: 'sprintf_s' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'double'
+  TesteAllegro.vcxproj -> C:\GIT\the_game\Debug\TesteAllegro.exe

@@ -43,3 +43,21 @@ int Character::getY_atk()
 {
 	return y_atk;
 }
+
+void Character::setLeft(bool lf)
+{
+	left = lf;
+}
+bool Character::getLeft()
+{
+	return left;
+}
+
+void Character::setDamage(float dmg)
+{
+	damage = dmg;
+}
+float Character::getDamage()
+{
+	return damage;
+}

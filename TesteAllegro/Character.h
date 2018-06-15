@@ -9,8 +9,8 @@ protected:
 	int alt_atk;
 	int x_atk; //posiçao x de ataque no mapa sprite
 	int y_atk; // posição y de ataque no mapa sprite
-
-	int damage;
+	bool left = false;
+	float damage;
 public:
 	int count_atk;
 	int coluna_atk;
@@ -24,7 +24,10 @@ public:
 	int getX_atk();
 	void setY_atk(int y_atkN);
 	int getY_atk();
-
+	void setLeft(bool lf);
+	bool getLeft();
+	void setDamage(float dmg);
+	float getDamage();
 	//virtual void move() = 0;
 	
 	

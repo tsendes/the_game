@@ -1,6 +1,7 @@
 #pragma once
 //Class things and requirements
 #include "Display.h"
+#include <inttypes.h>
 #include "Mouse.h"
 #include "Background.h"
 #include "Font.h"
@@ -18,16 +19,17 @@
 #include "Tribesman.h"
 #include "Object.h"
 #include <string.h>
+#include <stdio.h>
 
+#define HEIGHT 16
+#define FPS  60
 class Game
 {
-
 private:
 	void error_check();
 	void register_interrupts();
 	void draw_screen();
 	void run_game();
-	float FPS = 60; //nao precisa explicar isso neh?
 	int SCREEN_W = 1366;
 	int SCREEN_H = 766;
 
@@ -58,6 +60,7 @@ public:
 	void addon_init();
 	Game();
 	~Game();
+	uint8_t collider(float x1, float y1, int larg1,int alt1, float x2, float y2, int larg2, int alt2);
 	
 struct Flag
 {

@@ -65,11 +65,11 @@ float Entity::getPos_i()
 {
 	return pos_i;
 }
-void Entity::setLife(float lifeN)
+void Entity::setHealth(float lifeN)
 {
-	life = lifeN;
+	health = lifeN;
 }
-float Entity::getLife()
+float Entity::getHealth()
 {
-	return life;
+	return health;
 }

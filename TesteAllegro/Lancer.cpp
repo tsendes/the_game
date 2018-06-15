@@ -11,6 +11,7 @@ Lancer::~Lancer()
 }
 void Lancer::create_Lancer()
 {
+	al_destroy_bitmap(field);
 	field = al_load_bitmap("Walk_Sprite_Lancer.png");
 	cont = 0;
 	coluna = 0;
@@ -25,19 +26,17 @@ void Lancer::create_Lancer()
 	alt_atk = 38;
 	count_atk = 0;
 	bouncer_x = 23 * 3;
-	bouncer_y = 766 - 30 - alt * 3;
+	bouncer_y = 766 - 30 - alt * SCALE;
 	pos_i = 766 - 30 - alt * 3;
+	left = false;
 }
 
 void Lancer::attack(bool* atk, bool* atk_x, bool* key)
 {
 	if (*atk_x == true && *atk == false) //atk Lancer
 	{
-		al_destroy_bitmap(field);
-		field = al_load_bitmap("Attack_Sprite_lancer");
-		al_draw_scaled_bitmap(field, x_atk, y_atk, larg_atk, alt_atk, bouncer_x, bouncer_y, larg_atk * 3, alt_atk * 3, key[KEY_LEFT] ? ALLEGRO_FLIP_HORIZONTAL : 0);
 		count_atk++;
-		if (count_atk == 20)
+		if (count_atk == 10)
 		{
 			count_atk = 0;
 			coluna_atk++;

@@ -4,8 +4,9 @@
 
 class Player : public Character
 {
-private:
+protected:
 	char name[30];
+	
 public:
 	void setName(char* nameN);
 	char* getName();

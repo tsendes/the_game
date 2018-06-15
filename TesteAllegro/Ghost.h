@@ -2,6 +2,8 @@
 #include "Enemy.h"
 
 #define SPEED 2.0
+#define HEALTH_GHOST 15
+#define DMG_GHOST 50
 class Ghost : public Enemy
 {
 public:

@@ -23,6 +23,8 @@ void Ghost::create_Ghost()
 	bouncer_x = 600;
 	bouncer_y = pos_i = 766 - 260 - alt * 3;
 	invert = -1;
+	health = HEALTH_GHOST;
+	damage = DMG_GHOST;
 }
 
 void Ghost::moveEnemy(float x, float y)
@@ -30,7 +32,7 @@ void Ghost::moveEnemy(float x, float y)
 	int vision = x - bouncer_x;
 	if (vision < 0)
 		vision *= -1;
-	if (has_vision(vision))
+	if (hasVision(vision))
 	{
 		if (x > bouncer_x)
 		{
@@ -51,7 +53,7 @@ void Ghost::moveEnemy(float x, float y)
 			pos_i += SPEED;
 		}
 	}
-	else if(!has_vision(vision))
+	else if(!hasVision(vision))
 	{
 		bouncer_y += SPEED/2 * invert;
 		if(bouncer_y <= pos_i / 1.12 || bouncer_y >= pos_i)

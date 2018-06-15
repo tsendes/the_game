@@ -12,5 +12,5 @@ public:
 
 	virtual void moveEnemy(float x, float y) {}
 	virtual void attackEnemy() = 0;
-	bool has_vision(float vision);
+	bool hasVision(float vision);
 };

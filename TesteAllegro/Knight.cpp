@@ -12,6 +12,7 @@ Knight::~Knight()
 }
 void Knight::create_Knight()
 {
+	al_destroy_bitmap(field);
 	field = al_load_bitmap("Walk_Sprite_Knight.png");
 	cont = 0;
 	coluna = 0;
@@ -28,17 +29,16 @@ void Knight::create_Knight()
 	bouncer_x = 25 * 3 + 23 * 3;
 	bouncer_y = 766 - 65 - alt * 3;
 	pos_i = 766 - 65 - alt * 3;
+	left = false;
+	health = 100;
 }
 
 void Knight::attack(bool* atk, bool* atk_x, bool* key)
 {
 	if (*atk == true && *atk_x == false) //Atk Knight
 	{
-		al_destroy_bitmap(field);
-		field = al_load_bitmap("Attack_Sprite_Knight.png");
-		al_draw_scaled_bitmap(field, x_atk, y_atk, larg_atk, alt_atk, bouncer_x, bouncer_y, larg_atk * 3, alt_atk * 3, key[KEY_LEFT] ? ALLEGRO_FLIP_HORIZONTAL : 0);
 		count_atk++;
-		if (count_atk == 12)
+		if (count_atk == 6)
 		{
 			count_atk = 0;
 			coluna_atk++;

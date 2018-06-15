@@ -3,6 +3,8 @@
 
 #define SPEED 3.0
 #define LIMIT 75
+#define HEALTH_HUMANOID 100
+#define DMG_HUMANOID 25
 
 class Humanoid : public Enemy
 {
@@ -12,6 +14,6 @@ protected:
 public:
 	Humanoid();
 	~Humanoid();
-	//virtual void move();
+	void moveEnemy(float x, float y);
 	//virtual void attack();
 };

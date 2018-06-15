@@ -24,13 +24,13 @@ void Player::move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* r
 	{
 
 		*timer += 1;
-		if (*timer >= 5)
+		if (*timer >= 35)
 		{
 			*timer = 0;
 			*adjust /= 1.5;
 		}
 		bouncer_y -= 9.8 * (*adjust);
-		if (*adjust <= 0.2)
+		if (*adjust <= 0.5)
 		{
 			*exaust = true;
 			key[KEY_UP] = false;
@@ -44,7 +44,7 @@ void Player::move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* r
 	{
 		bouncer_x -= 7.0;
 		cont++;
-
+		left = true;
 		if (cont == 8)
 		{
 			cont = 0;
@@ -62,6 +62,7 @@ void Player::move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* r
 	{
 		bouncer_x += 7.0;
 		cont++;
+		left = false;
 		if (cont == 8)
 		{
 			cont = 0;
@@ -78,7 +79,7 @@ void Player::move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* r
 	if (bouncer_y < pos_i && !key[KEY_UP])
 	{
 		*timer += 1;
-		if (*timer >= 5)
+		if (*timer >= 15)
 		{
 			*timer = 0;
 			*adjust *= 1.5;

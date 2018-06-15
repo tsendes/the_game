@@ -11,10 +11,12 @@ protected:
 	int x_atual; //x atual no mapa sprite
 	int y_atual; //y atual no mapa sprite
 	float pos_i;
-	float life;
+	float health;
 
 public:
 	ALLEGRO_BITMAP * field; //gera o bloco, é Tatepon por agora
+	//ALLEGRO_BITMAP* walk_sprite;
+	//ALLEGRO_BITMAP* attack_sprite;
 	int cont; //contador de ql parte do sprite esta
 	int coluna; //qntd de colunas do mapa sprite
 	Entity();
@@ -33,8 +35,8 @@ public:
 	int getY_atual();
 	void setPos_i(float pos_i);
 	float getPos_i();
-	void setLife(float life);
-	float getLife();
+	void setHealth(float life);
+	float getHealth();
 
 	enum MYKEYS
 	{
