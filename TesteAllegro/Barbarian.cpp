@@ -11,7 +11,8 @@ Barbarian::~Barbarian()
 }
 void Barbarian::create_Barbarian()
 {
-	field = al_load_bitmap("Enemy_Barbarian_Walk.png");
+	walk_sprite = al_load_bitmap("Enemy_Barbarian_Walk.png");
+	attack_sprite = al_load_bitmap("Enemy_Barbarian_Attack.png");
 	cont = 0;
 	coluna = 0;
 	larg = 24; // padronizar esses parametros para todas as sprites

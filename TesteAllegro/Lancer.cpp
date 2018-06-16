@@ -7,12 +7,13 @@ Lancer::Lancer()
 
 Lancer::~Lancer()
 {
-	al_destroy_bitmap(field);
+	al_destroy_bitmap(walk_sprite);
+	al_destroy_bitmap(attack_sprite);
 }
 void Lancer::create_Lancer()
 {
-	al_destroy_bitmap(field);
-	field = al_load_bitmap("Walk_Sprite_Lancer.png");
+	walk_sprite = al_load_bitmap("Walk_Sprite_Lancer.png");
+	attack_sprite = al_load_bitmap("Attack_Sprite_Lancer.png");
 	cont = 0;
 	coluna = 0;
 	larg = 38;

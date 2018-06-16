@@ -5,6 +5,8 @@
 class Character : public Entity
 {
 protected:
+	ALLEGRO_BITMAP * walk_sprite;
+	ALLEGRO_BITMAP * attack_sprite;
 	int larg_atk;
 	int alt_atk;
 	int x_atk; //posiçao x de ataque no mapa sprite
@@ -28,7 +30,9 @@ public:
 	bool getLeft();
 	void setDamage(float dmg);
 	float getDamage();
-	//virtual void move() = 0;
+	ALLEGRO_BITMAP* getWalk_sprite();
+	ALLEGRO_BITMAP* getAttack_sprite();
+
 	
 	
 };

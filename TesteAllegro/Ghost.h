@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy.h"
 
-#define SPEED 2.0
+#define SPEED_GHOST 2.0
 #define HEALTH_GHOST 15
 #define DMG_GHOST 50
 class Ghost : public Enemy

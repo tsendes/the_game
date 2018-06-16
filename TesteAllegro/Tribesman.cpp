@@ -7,11 +7,13 @@ Tribesman::Tribesman()
 
 Tribesman::~Tribesman()
 {
-
+	al_destroy_bitmap(walk_sprite);
+	al_destroy_bitmap(attack_sprite);
 }
 void Tribesman::create_Tribesman()
 {
-	field = al_load_bitmap("Enemy_Tribesman_Walk.png");
+	walk_sprite = al_load_bitmap("Enemy_Tribesman_Walk.png");
+	attack_sprite = al_load_bitmap("Enemy_Tribesman_Attack.png");
 	cont = 0;
 	coluna = 0;
 	larg = 38; // padronizar esses parametros para todas as sprites

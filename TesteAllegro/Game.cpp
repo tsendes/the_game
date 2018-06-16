@@ -69,15 +69,15 @@ void Game::error_check()
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create timer!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
-	if (!lancer.field) //Character
+	if (!lancer.getWalk_sprite()) //Character
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
-	if (!knight.field) //Character
+	if (!knight.getWalk_sprite()) //Character
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
-	if (!banner.field) //Character
+	if (!banner.getWalk_sprite()) //Character
 	{
 		al_show_native_message_box(display.display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 	}
@@ -153,7 +153,7 @@ void Game::run_game()
 			{
 				knight.setHealth(knight.getHealth() - tribesman.getDamage()*.005);
 				char dano[4];
-				sprintf_s(dano, "%d", tribesman.getDamage());
+				//sprintf_s(dano, "%f", tribesman.getDamage());
 				al_draw_text(font.font, al_map_rgb(255, 0, 0), SCREEN_W / 2.0, SCREEN_H / 2.0, ALLEGRO_ALIGN_CENTER, dano);
 				//knight.setBouncer_x(knight.getBouncer_x() - SCREEN_W * .05);
 			}
@@ -251,9 +251,9 @@ void Game::run_game()
 			al_draw_bitmap(block2.block, block2.bouncer_x, block2.bouncer_y, 0);
 			al_draw_bitmap(mouse.mouse, mouse.bouncer_x, mouse.bouncer_y, 0); //mouse
 
-			al_draw_scaled_bitmap(ghost.field, ghost.getX_atual(), ghost.getY_atual(), ghost.getLarg(), ghost.getAlt(), ghost.getBouncer_x(), ghost.getBouncer_y(), ghost.getLarg() * 2, ghost.getAlt() * 2, knight.getBouncer_x() - ghost.getBouncer_x() > 0 ? ALLEGRO_FLIP_HORIZONTAL : 0);
-			al_draw_scaled_bitmap(tribesman.field, tribesman.getX_atual(), tribesman.getY_atual(), tribesman.getLarg(), tribesman.getAlt(), tribesman.getBouncer_x(), tribesman.getBouncer_y(), tribesman.getLarg() * 3, tribesman.getAlt() * 3, tribesman.getLeft() > 0 ? 0 : ALLEGRO_FLIP_HORIZONTAL);
-			al_draw_scaled_bitmap(barbarian.field, barbarian.getX_atual(), barbarian.getY_atual(), barbarian.getLarg(), barbarian.getAlt(), barbarian.getBouncer_x(), barbarian.getBouncer_y(), barbarian.getLarg() * 3, barbarian.getAlt() * 3, barbarian.getLeft() > 0 ? 0 : ALLEGRO_FLIP_HORIZONTAL);
+			al_draw_scaled_bitmap(ghost.getWalk_sprite(), ghost.getX_atual(), ghost.getY_atual(), ghost.getLarg(), ghost.getAlt(), ghost.getBouncer_x(), ghost.getBouncer_y(), ghost.getLarg() * 2, ghost.getAlt() * 2, knight.getBouncer_x() - ghost.getBouncer_x() > 0 ? ALLEGRO_FLIP_HORIZONTAL : 0);
+			al_draw_scaled_bitmap(tribesman.getWalk_sprite(), tribesman.getX_atual(), tribesman.getY_atual(), tribesman.getLarg(), tribesman.getAlt(), tribesman.getBouncer_x(), tribesman.getBouncer_y(), tribesman.getLarg() * 3, tribesman.getAlt() * 3, tribesman.getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
+			al_draw_scaled_bitmap(barbarian.getWalk_sprite(), barbarian.getX_atual(), barbarian.getY_atual(), barbarian.getLarg(), barbarian.getAlt(), barbarian.getBouncer_x(), barbarian.getBouncer_y(), barbarian.getLarg() * 3, barbarian.getAlt() * 3, barbarian.getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
 
 			
 			
@@ -272,46 +272,36 @@ void Game::run_game()
 
 			if (flag.atk_x == true && flag.atk == false) //atk Lancer
 			{
-				al_destroy_bitmap(knight.field);
-				al_destroy_bitmap(lancer.field);
-				lancer.field = al_load_bitmap("Attack_Sprite_Lancer.png");
-				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
 				if (lancer.getLeft())
 				{
-					al_draw_scaled_bitmap(lancer.field, lancer.getX_atk(), lancer.getY_atk(), lancer.getLarg_atk(), lancer.getAlt_atk(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg_atk() * 3, lancer.getAlt_atk() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-					al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), banner.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(lancer.getAttack_sprite(), lancer.getX_atk(), lancer.getY_atk(), lancer.getLarg_atk(), lancer.getAlt_atk(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg_atk() * 3, lancer.getAlt_atk() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(knight.getWalk_sprite(), knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), banner.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				}
 				else
 				{
-					al_draw_scaled_bitmap(lancer.field, lancer.getX_atk(), lancer.getY_atk(), lancer.getLarg_atk(), lancer.getAlt_atk(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg_atk() * 3, lancer.getAlt_atk() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-					al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(lancer.getAttack_sprite(), lancer.getX_atk(), lancer.getY_atk(), lancer.getLarg_atk(), lancer.getAlt_atk(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg_atk() * 3, lancer.getAlt_atk() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(knight.getWalk_sprite(), knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				}
 			}
 			if (flag.atk == true && flag.atk_x == false) //Atk Knight
 			{
-				al_destroy_bitmap(knight.field);
-				al_destroy_bitmap(lancer.field);
-				knight.field = al_load_bitmap("Attack_Sprite_Knight.png");
-				lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
 				if (knight.getLeft())
 				{
-					al_draw_scaled_bitmap(knight.field, knight.getX_atk(), knight.getY_atk(), knight.getLarg_atk(), knight.getAlt_atk(), banner.getBouncer_x(), knight.getBouncer_y(), knight.getLarg_atk() * 3, knight.getAlt_atk() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-					al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(knight.getAttack_sprite(), knight.getX_atk(), knight.getY_atk(), knight.getLarg_atk(), knight.getAlt_atk(), banner.getBouncer_x(), knight.getBouncer_y(), knight.getLarg_atk() * 3, knight.getAlt_atk() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(lancer.getWalk_sprite(), lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				}
 				else
 				{
-					al_draw_scaled_bitmap(knight.field, knight.getX_atk(), knight.getY_atk(), knight.getLarg_atk(), knight.getAlt_atk(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg_atk() * 3, knight.getAlt_atk() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-					al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(knight.getAttack_sprite(), knight.getX_atk(), knight.getY_atk(), knight.getLarg_atk(), knight.getAlt_atk(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg_atk() * 3, knight.getAlt_atk() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(lancer.getWalk_sprite(), lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				}
 			}
 			if (flag.atk == true || flag.atk_x == true)
 			{
-				al_destroy_bitmap(banner.field);
-				banner.field = al_load_bitmap("Walk_Sprite_Banner.png");
 				if (banner.getLeft())
-					al_draw_scaled_bitmap(banner.field, banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), knight.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, banner.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(banner.getWalk_sprite(), banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), knight.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, banner.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				else
-					al_draw_scaled_bitmap(banner.field, banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), banner.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, banner.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(banner.getWalk_sprite(), banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), banner.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, banner.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 			}
 			knight.attack(&flag.atk, &flag.atk_x, key);
 			lancer.attack(&flag.atk, &flag.atk_x, key);
@@ -319,24 +309,18 @@ void Game::run_game()
 			
 			if ((flag.atk == false && flag.atk_x == false) || (flag.atk == true && flag.atk_x == true))
 			{
-				al_destroy_bitmap(knight.field);
-				al_destroy_bitmap(lancer.field);
-				al_destroy_bitmap(banner.field);
-				banner.field = al_load_bitmap("Walk_Sprite_Banner.png");
-				knight.field = al_load_bitmap("Walk_Sprite_Knight.png");
-				lancer.field = al_load_bitmap("Walk_Sprite_Lancer.png");
 				if (knight.getLeft())
 				{
 					
-					al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-					al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), banner.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-					al_draw_scaled_bitmap(banner.field, banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), knight.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, banner.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(lancer.getWalk_sprite(), lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(knight.getWalk_sprite(), knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), banner.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(banner.getWalk_sprite(), banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), knight.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, banner.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				}
 				else
 				{
-					al_draw_scaled_bitmap(lancer.field, lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-					al_draw_scaled_bitmap(knight.field, knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-					al_draw_scaled_bitmap(banner.field, banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), banner.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, banner.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(lancer.getWalk_sprite(), lancer.getX_atual(), lancer.getY_atual(), lancer.getLarg(), lancer.getAlt(), lancer.getBouncer_x(), lancer.getBouncer_y(), lancer.getLarg() * 3, lancer.getAlt() * 3, lancer.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(knight.getWalk_sprite(), knight.getX_atual(), knight.getY_atual(), knight.getLarg(), knight.getAlt(), knight.getBouncer_x(), knight.getBouncer_y(), knight.getLarg() * 3, knight.getAlt() * 3, knight.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+					al_draw_scaled_bitmap(banner.getWalk_sprite(), banner.getX_atual(), banner.getY_atual(), banner.getLarg(), banner.getAlt(), banner.getBouncer_x(), banner.getBouncer_y(), banner.getLarg() * 3, banner.getAlt() * 3, banner.getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 				}
 			}
 			al_flip_display();

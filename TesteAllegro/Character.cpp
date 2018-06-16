@@ -61,3 +61,11 @@ float Character::getDamage()
 {
 	return damage;
 }
+ALLEGRO_BITMAP* Character::getWalk_sprite()
+{
+	return walk_sprite;
+}
+ALLEGRO_BITMAP* Character::getAttack_sprite()
+{
+	return attack_sprite;
+}

@@ -7,11 +7,11 @@ Banner::Banner():
 }
 Banner::~Banner()
 {
-
+	al_destroy_bitmap(walk_sprite);
 }
 void Banner::create_Banner()
 {
-	field = al_load_bitmap("Walk_Sprite_Banner.png");
+	walk_sprite = al_load_bitmap("Walk_Sprite_Banner.png");
 	cont = 0;
 	coluna = 0;
 	larg = 29; // padronizar esses parametros para todas as sprites

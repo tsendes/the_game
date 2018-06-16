@@ -8,12 +8,13 @@ Knight::Knight():
 
 Knight::~Knight()
 {
-	al_destroy_bitmap(field);
+	al_destroy_bitmap(walk_sprite);
+	al_destroy_bitmap(attack_sprite);
 }
 void Knight::create_Knight()
 {
-	al_destroy_bitmap(field);
-	field = al_load_bitmap("Walk_Sprite_Knight.png");
+	walk_sprite = al_load_bitmap("Walk_Sprite_Knight.png");
+	attack_sprite = al_load_bitmap("Attack_Sprite_Knight.png");
 	cont = 0;
 	coluna = 0;
 	larg = 20; // padronizar esses parametros para todas as sprites
