@@ -1,20 +1,3 @@
-﻿  ListEnt.cpp
-c:\git\the_game\testeallegro\listent.h(33): error C2561: 'ListEnt::getNextE': function must return a value
-  c:\git\the_game\testeallegro\listent.h(30): note: see declaration of 'ListEnt::getNextE'
-c:\git\the_game\testeallegro\listent.cpp(9): error C2065: 'inc': undeclared identifier
-  Menu.cpp
-c:\git\the_game\testeallegro\listent.h(33): error C2561: 'ListEnt::getNextE': function must return a value
-  c:\git\the_game\testeallegro\listent.h(30): note: see declaration of 'ListEnt::getNextE'
-  Game.cpp
-c:\git\the_game\testeallegro\listent.h(33): error C2561: 'ListEnt::getNextE': function must return a value
-  c:\git\the_game\testeallegro\listent.h(30): note: see declaration of 'ListEnt::getNextE'
-  Main.cpp
-c:\git\the_game\testeallegro\listent.h(33): error C2561: 'ListEnt::getNextE': function must return a value
-  c:\git\the_game\testeallegro\listent.h(30): note: see declaration of 'ListEnt::getNextE'
-  Stage.cpp
-c:\git\the_game\testeallegro\listent.h(33): error C2561: 'ListEnt::getNextE': function must return a value
-  c:\git\the_game\testeallegro\listent.h(30): note: see declaration of 'ListEnt::getNextE'
-  Stage1.cpp
-c:\git\the_game\testeallegro\listent.h(33): error C2561: 'ListEnt::getNextE': function must return a value
-  c:\git\the_game\testeallegro\listent.h(30): note: see declaration of 'ListEnt::getNextE'
-  Generating Code...
+﻿  Game.cpp
+c:\git\the_game\testeallegro\game.cpp(125): warning C4101: 'error': unreferenced local variable
+  TesteAllegro.vcxproj -> C:\GIT\the_game\Debug\TesteAllegro.exe

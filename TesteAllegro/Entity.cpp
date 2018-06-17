@@ -12,6 +12,8 @@ Entity::~Entity()
 void Entity::setBouncer_x(float x)
 {
 	bouncer_x = x;
+	idleN = x - LIMIT;
+	idleP = x + LIMIT;
 }
 float Entity::getBouncer_x()
 {

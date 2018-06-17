@@ -1,6 +1,8 @@
 #pragma once
 #include <allegro5/allegro.h>
 
+#define LIMIT 75
+
 class Entity
 {
 protected:
@@ -12,6 +14,9 @@ protected:
 	int y_atual; //y atual no mapa sprite
 	float pos_i;
 	float health;
+
+	float idleP;
+	float idleN;
 
 public:
 	ALLEGRO_BITMAP * field; //gera o bloco, é Tatepon por agora

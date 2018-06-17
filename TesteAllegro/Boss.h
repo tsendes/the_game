@@ -13,7 +13,8 @@ public:
 	void create_Boss();
 	//void move();
 	void boss_Ult();
-	//void attack();
+	void attackEnemy() {}
+	void moveEnemy(float x, float y);
 	void setDamage_Ult(float dmg);
 	float getDamage_Ult();
 	void setCharge_Bar(int bar);

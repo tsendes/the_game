@@ -76,8 +76,7 @@
     <Allegro_AddonDialog>true</Allegro_AddonDialog>
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
-    <Allegro_AddonAudio>
-    </Allegro_AddonAudio>
+    <Allegro_AddonAudio>true</Allegro_AddonAudio>
     <Allegro_AddonAcodec>
     </Allegro_AddonAcodec>
     <Allegro_AddonPhysfs>

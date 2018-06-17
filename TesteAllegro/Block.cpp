@@ -11,7 +11,10 @@ Block::Block()
 
 void Block::create_field(int x, int y)
 {
-	block = al_load_bitmap("Desert_Block.png");
+	forest = al_load_bitmap("Forest_Block.png");
+	desert = al_load_bitmap("Desert_Block.png");
+	boss = al_load_bitmap("Boss_Block.png");
+	block = desert;
 	bouncer_x = x + 0;
 	bouncer_y = 686 - y;
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "Game.h"
 #include "ListEnt.h"
 #include "Stage.h"
 #include "Knight.h"
@@ -11,6 +12,7 @@ protected:
 public:
 	Stage1();
 	~Stage1();
-	void buildStage1();
+	void buildList();
 	void destroyStage1();
+	//void buildStage1(Game* stage);
 };

@@ -7,12 +7,18 @@
 #include "Ghost.h"
 #include "Barbarian.h"
 #include "Tribesman.h"
+#include "Boss.h"
 #include "Display.h"
 #include "Background.h"
 #include "Mouse.h"
 #include "Font.h"
 #include "Block.h"
 #include "Stage1.h"
+#include <time.h>
+#include <stdio.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_audio.h>
 
 //Class things and requirements
 
@@ -20,6 +26,7 @@
 #define HEIGHT 16
 #define FPS  60
 #define BLOCK_W 800
+#define NUM_ENEMIES rand()%5 + 10
 class Game
 {
 private:
@@ -27,6 +34,7 @@ private:
 	void register_interrupts();
 	void draw_screen();
 	void run_game();
+	int stage = 1;
 	int SCREEN_W = 1366;
 	int SCREEN_H = 766;
 
@@ -47,13 +55,17 @@ private:
 	Lancer* lancer = new Lancer;
 
 //Inimigos--------------------------------------------------//
-	Ghost* ghost = new Ghost;
-	Barbarian* barbarian = new Barbarian;
-	Tribesman* tribesman = new Tribesman;
+	static const int  num_ghost = /*NUM_ENEMIES*/5;
+	Ghost* ghost[num_ghost];
+	static const int num_bar = /*NUM_ENEMIES*/5;
+	Barbarian* barbarian[num_bar];
+	static const int num_trib = /*NUM_ENEMIES*/5;
+	Tribesman* tribesman[num_trib];
+
+	Boss boss;
 
 	Mouse mouse; //coisas do mouse
 	Font font; //fonte para escrita na telinha
-	Font dialogo;
 	Keyboard keyboard; //coisas do teclado
 	
 
@@ -76,36 +88,49 @@ public:
 	{
 		knight = kn;
 	}
-	void setGhost(Ghost* gh)
+	void setGhost(Ghost* gh, int i)
 	{
-		ghost = gh;
+		*ghost[i] = *gh;
 	}
 	void setBarbarian(Barbarian* bar)
 	{
-		barbarian = bar;
+		*barbarian = bar;
+	}
+	void setStage(int s)
+	{
+		stage = s;
+	}
+	int getStage()
+	{
+		return stage;
 	}
 	uint8_t collider(float x1, float y1, int larg1,int alt1, float x2, float y2, int larg2, int alt2);
+	void createGame(Game* stage);
 
 	//retirar isso daqui depois
-	Stage1 s1;
+	//Stage1 s1;
+
 
 	float cameraX;
 	float worldW;
-	
+	ALLEGRO_SAMPLE* sample = al_load_sample("The_Opening.ogg");
 struct Flag
 {
-	bool doexit = false; //flag de fim do programa
+	bool doexit = true; //flag de fim do programa
 	bool redraw = true; //flag de solicitação de atualizaçao da telinha
 	bool atk = false; //flag de ação de ataque Knight
 	bool atk_x = false; //falg de ação de ataque Lancer
 	bool exaust = false;
 	bool menu = true;
-};
-	Flag flag;
+	bool finish = true;
+	bool button1 = true;
+	bool button2 = false;
+	bool button3 = false;
+};Flag flag;
 
 enum MYKEYS
 {
-	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, Z_KEY, X_KEY, I_KEY, K_KEY, J_KEY, L_KEY
+	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, Z_KEY, X_KEY, I_KEY, K_KEY, J_KEY, L_KEY, ENTER_KEY
 };
-	bool key[10] = { false, false, false, false, false, false, false, false, false, false }; //funfa em combo com o MYKEYS
+	bool key[11] = { false, false, false, false, false, false, false, false, false, false, false }; //funfa em combo com o MYKEYS
 };

@@ -38,15 +38,15 @@ public:
 	}
 	void removeFromList()
 	{
-		Chart<T>* pAux = pFirst;
-		Chart<T>* pPrevious;
-		while (pAux->pNext != NULL)
+		Element<T>* pAux = pFirst->getpFirst();
+		Element<T>* pPrevious = NULL;
+		while (pAux->getpNext() != NULL)
 		{
 			pPrevious = pAux;
 			pAux = pNext;
 		}
 		delete pAux;
-		pPrevious->pNext = NULL;
+		pPrevious->setpNext(NULL);
 	}
 	void setpFirst(Element<T>* el)
 	{

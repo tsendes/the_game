@@ -5,6 +5,9 @@ class Block
 {
 public:
 	ALLEGRO_BITMAP * block;
+	ALLEGRO_BITMAP * desert;
+	ALLEGRO_BITMAP * forest;
+	ALLEGRO_BITMAP * boss;
 	float bouncer_x; //local de inicializaçao
 	float bouncer_y; //local de inicializaçao
 

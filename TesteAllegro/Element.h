@@ -21,6 +21,10 @@ public:
 	{
 		pFirst = p;
 	}
+	Element<T2>* getpFirst()
+	{
+		return pFirst;
+	}
 	Element<T2>* setpFirst()
 	{
 		return pFirst;
