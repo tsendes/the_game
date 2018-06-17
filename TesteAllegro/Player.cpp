@@ -18,6 +18,14 @@ char* Player::getName()
 {
 	return name;
 }
+void Player::setIcon(ALLEGRO_BITMAP* icone)
+{
+	icon = icone;
+}
+ALLEGRO_BITMAP* Player::getIcon()
+{
+	return icon;
+}
 void Player::move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* redraw, bool* exaust, bool* key)
 {
 	if (key[KEY_UP] && bouncer_y >= 4.0 && *exaust == false)
@@ -25,7 +33,7 @@ void Player::move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* r
 
 		*timer += 1;
 		if (*timer >= 35)
-		{
+		{	
 			*timer = 0;
 			*adjust /= 1.5;
 		}

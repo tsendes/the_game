@@ -2,7 +2,10 @@
 
 Display::Display()
 {
-	//nada
+
+	al_init(); //inicializa a allegro
+	al_init_image_addon(); //inicializa o addon de Image, checar propriedades do projeto -> Allegro 5 -> Add-Ons 
+	create_display();
 }
 Display::~Display()
 {

@@ -2,7 +2,7 @@
 
 Boss::Boss()
 {
-
+	create_Boss();
 }
 
 Boss::~Boss()
@@ -12,20 +12,20 @@ Boss::~Boss()
 
 void Boss::create_Boss()
 {
-	field = al_load_bitmap("Enemy_Boss.png");
+	walk_sprite = al_load_bitmap("Boss_Walk_Sprite.png");
+	field = walk_sprite;
+	attack_sprite = al_load_bitmap("Boss_Attack_Sprite.png");
+	ult_sprite = al_load_bitmap("Boss_Ultimate.png");
+	larg = 50;
+	alt = 53;
+	//falta coisas para iniciar
 }
-//void Character::move()
-//{
-//
-//}
+
 void Boss::boss_Ult()
 {
 
 }
-//void Character::attack()
-//{
-//
-//}
+
 void Boss::setDamage_Ult(float dmg)
 {
 	damage_ult = dmg;

@@ -3,7 +3,7 @@
 Knight::Knight():
 	Player()
 {
-
+	create_Knight();
 }
 
 Knight::~Knight()
@@ -14,7 +14,9 @@ Knight::~Knight()
 void Knight::create_Knight()
 {
 	walk_sprite = al_load_bitmap("Walk_Sprite_Knight.png");
+	field = walk_sprite;
 	attack_sprite = al_load_bitmap("Attack_Sprite_Knight.png");
+	icon = al_load_bitmap("Icon_Knight.png");
 	cont = 0;
 	coluna = 0;
 	larg = 20; // padronizar esses parametros para todas as sprites
@@ -24,12 +26,11 @@ void Knight::create_Knight()
 	x_atk = 0;
 	y_atk = 0;
 	coluna_atk = 0;
-	larg_atk = 38;
-	alt_atk = 38;
+	larg_atk = alt_atk = 38;
 	count_atk = 0;
-	bouncer_x = 25 * 3 + 23 * 3;
-	bouncer_y = 766 - 65 - alt * 3;
-	pos_i = 766 - 65 - alt * 3;
+	bouncer_x = 25 * SCALE + 23 * SCALE;
+	bouncer_y = 700 - alt * SCALE;
+	pos_i = 700 - alt * SCALE;
 	left = false;
 	health = 100;
 }

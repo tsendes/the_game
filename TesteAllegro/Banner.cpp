@@ -3,7 +3,7 @@
 Banner::Banner():
 	Player()
 {
-	
+	create_Banner();
 }
 Banner::~Banner()
 {
@@ -12,6 +12,7 @@ Banner::~Banner()
 void Banner::create_Banner()
 {
 	walk_sprite = al_load_bitmap("Walk_Sprite_Banner.png");
+	field = walk_sprite;
 	cont = 0;
 	coluna = 0;
 	larg = 29; // padronizar esses parametros para todas as sprites
@@ -19,8 +20,7 @@ void Banner::create_Banner()
 	x_atual = 0;
 	y_atual = 0;
 	bouncer_x = 2;
-	bouncer_y = 766 - 65 - alt * 3;
-	pos_i = 766 - 65 - alt * 3;
+	bouncer_y = pos_i = 700 - alt * 3;
 	left = false;
 }
 

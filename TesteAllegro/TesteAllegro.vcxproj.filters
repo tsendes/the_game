@@ -81,6 +81,18 @@
     <ClCompile Include="Banner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ListEnt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mouse.h">
@@ -141,6 +153,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Banner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ListEnt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Element.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

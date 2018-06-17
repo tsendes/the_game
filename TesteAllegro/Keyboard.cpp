@@ -2,7 +2,7 @@
 
 Keyboard::Keyboard()
 {
-	//nothing
+	create_keyboard();
 }
 Keyboard::~Keyboard()
 {
@@ -10,5 +10,5 @@ Keyboard::~Keyboard()
 }
 void Keyboard::create_keyboard()
 {
-	al_install_keyboard();
+	al_install_keyboard(); //inicializa o addon de Keyboard, checar propriedades do projeto -> Allegro 5 -> Add-Ons
 }

@@ -3,7 +3,7 @@
 
 Ghost::Ghost()
 {
-
+	create_Ghost();
 }
 
 Ghost::~Ghost()
@@ -14,6 +14,7 @@ Ghost::~Ghost()
 void Ghost::create_Ghost()
 {
 	walk_sprite = al_load_bitmap("Enemy_Ghost.png");
+	field = walk_sprite;
 	cont = 0;
 	coluna = 0;
 	larg = 22; // padronizar esses parametros para todas as sprites
@@ -21,7 +22,7 @@ void Ghost::create_Ghost()
 	x_atual = 0;
 	y_atual = 0;
 	bouncer_x = 600;
-	bouncer_y = pos_i = 766 - 260 - alt * 3;
+	bouncer_y = pos_i = 766 - 260 - alt * SCALE;
 	invert = -1;
 	health = HEALTH_GHOST;
 	damage = DMG_GHOST;

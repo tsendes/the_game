@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 
+#define SCALE 3
 
 class Character : public Entity
 {

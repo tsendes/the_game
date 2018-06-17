@@ -1,8 +1,6 @@
 #pragma once
 #include "Player.h"
 
-#define SCALE 3
-
 class Lancer : public Player
 {
 public:

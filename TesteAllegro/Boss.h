@@ -6,6 +6,7 @@ private:
 	//algo
 	float damage_ult;
 	int charge_bar;
+	ALLEGRO_BITMAP* ult_sprite;
 public:
 	Boss();
 	~Boss();

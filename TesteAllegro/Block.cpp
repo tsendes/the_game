@@ -1,11 +1,19 @@
 #include "Block.h"
 
+Block::Block(int x, int y)
+{
+	create_field(x, y);
+}
+Block::Block()
+{
+	create_field(0, 0);
+}
 
 void Block::create_field(int x, int y)
 {
 	block = al_load_bitmap("Desert_Block.png");
 	bouncer_x = x + 0;
-	bouncer_y = 766 - 80 - y;
+	bouncer_y = 686 - y;
 }
 
 Block::~Block()
