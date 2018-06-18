@@ -32,6 +32,7 @@ void Barbarian::create_Barbarian()
 	left = false;
 	health = HEALTH_HUMANOID;
 	damage = DMG_HUMANOID;
+	is_present = true;
 }
 
 void Barbarian::attackEnemy()

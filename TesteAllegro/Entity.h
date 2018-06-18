@@ -14,7 +14,7 @@ protected:
 	int y_atual; //y atual no mapa sprite
 	float pos_i;
 	float health;
-
+	bool is_present;
 	float idleP;
 	float idleN;
 
@@ -42,6 +42,14 @@ public:
 	float getPos_i();
 	void setHealth(float life);
 	float getHealth();
+	bool getisPresent()
+	{
+		return is_present;
+	}
+	void setisPresent(bool pr)
+	{
+		is_present = pr;
+	}
 
 	enum MYKEYS
 	{

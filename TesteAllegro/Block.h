@@ -11,7 +11,6 @@ public:
 	float bouncer_x; //local de inicializaçao
 	float bouncer_y; //local de inicializaçao
 
-	Block(int x, int y);
 	Block();
 	~Block();
 	void create_field(int x, int y = 0);

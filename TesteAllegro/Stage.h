@@ -5,7 +5,6 @@ class Stage
 {
 protected:
 	ListEnt* lEnt;
-
 public:
 	Stage();
 	~Stage();

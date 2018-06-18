@@ -33,6 +33,7 @@ void Tribesman::create_Tribesman()
 	left = false;
 	health = HEALTH_HUMANOID;
 	damage = DMG_HUMANOID;
+	is_present = true;
 }
 
 void Tribesman::attackEnemy()

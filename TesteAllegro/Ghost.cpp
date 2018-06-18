@@ -26,6 +26,7 @@ void Ghost::create_Ghost()
 	invert = -1;
 	health = HEALTH_GHOST;
 	damage = DMG_GHOST;
+	is_present = true;
 }
 
 void Ghost::moveEnemy(float x, float y)

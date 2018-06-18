@@ -28,6 +28,8 @@ void Lancer::create_Lancer()
 	bouncer_y = 736 - alt * SCALE;
 	pos_i = 736 - alt * SCALE;
 	left = false;
+	is_present = true;
+	damage = 50;
 }
 
 void Lancer::attack(bool* atk, bool* atk_x, bool* key)

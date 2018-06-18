@@ -37,6 +37,9 @@ private:
 	int stage = 1;
 	int SCREEN_W = 1366;
 	int SCREEN_H = 766;
+	float adjust1;
+	float adjust2;
+	float adjust3;
 
 
 	//Stranger things
@@ -55,11 +58,11 @@ private:
 	Lancer* lancer = new Lancer;
 
 //Inimigos--------------------------------------------------//
-	static const int  num_ghost = /*NUM_ENEMIES*/5;
+	static const int  num_ghost = /*NUM_ENEMIES*/1;
 	Ghost* ghost[num_ghost];
-	static const int num_bar = /*NUM_ENEMIES*/5;
+	static const int num_bar = /*NUM_ENEMIES*/1;
 	Barbarian* barbarian[num_bar];
-	static const int num_trib = /*NUM_ENEMIES*/5;
+	static const int num_trib = /*NUM_ENEMIES*/1;
 	Tribesman* tribesman[num_trib];
 
 	Boss boss;
@@ -104,7 +107,8 @@ public:
 	{
 		return stage;
 	}
-	uint8_t collider(float x1, float y1, int larg1,int alt1, float x2, float y2, int larg2, int alt2);
+	uint8_t colliderX(float x1, int larg1, float x2, int larg2);
+	uint8_t colliderY(float y1, int alt1, float y2, int alt2);
 	void createGame(Game* stage);
 
 	//retirar isso daqui depois

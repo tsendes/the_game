@@ -1,9 +1,5 @@
 #include "Block.h"
 
-Block::Block(int x, int y)
-{
-	create_field(x, y);
-}
 Block::Block()
 {
 	create_field(0, 0);

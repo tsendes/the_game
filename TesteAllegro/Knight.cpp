@@ -33,6 +33,8 @@ void Knight::create_Knight()
 	pos_i = 700 - alt * SCALE;
 	left = false;
 	health = 100;
+	is_present = true;
+	damage = 50;
 }
 
 void Knight::attack(bool* atk, bool* atk_x, bool* key)
