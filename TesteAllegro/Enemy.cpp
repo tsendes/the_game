@@ -17,3 +17,8 @@ bool Enemy::hasVision(float vision)
 	else
 		return false;
 }
+float Enemy::getEnemy_score()
+{
+	return enemy_score;
+}
+

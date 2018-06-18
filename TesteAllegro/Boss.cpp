@@ -33,12 +33,31 @@ void Boss::create_Boss()
 	pos_i = 736 - alt * SCALE;
 	left = false;
 	damage = 100;
+	damage_ult = 10;
+	health = 5000;
+	is_present = true;
+	enemy_score = 50;
+	count_inv = 30;
+	invencible = false;
 	//falta coisas para iniciar
 }
 
 void Boss::boss_Ult()
 {
-
+	bouncer_x = 1366 / 2;
+	bouncer_y = 766 / 2;
+	count_atk++;
+	if (count_atk == 6)
+	{
+		count_atk = 0;
+		coluna_atk++;
+		x_atk += larg_atk;
+		if (coluna_atk >= 6)
+		{
+			coluna_atk = 0;
+			x_atk = 0;
+		}
+	}
 }
 
 void Boss::setDamage_Ult(float dmg)
@@ -56,6 +75,14 @@ void Boss::setCharge_Bar(int bar)
 int Boss::getCharge_Bar()
 {
 	return charge_bar;
+}
+void Boss:: setUlt_sprite(ALLEGRO_BITMAP* sp)
+{
+	ult_sprite = sp;
+}
+ALLEGRO_BITMAP* Boss:: getUlt_sprite()
+{
+	return ult_sprite;
 }
 
 void Boss::moveEnemy(float x, float y)
@@ -131,5 +158,20 @@ void Boss::moveEnemy(float x, float y)
 				left = true;
 		}
 
+	}
+}
+void Boss::attackEnemy()
+{
+	count_atk++;
+	if (count_atk == 6)
+	{
+		count_atk = 0;
+		coluna_atk++;
+		x_atk += larg_atk;
+		if (coluna_atk >= 6)
+		{
+			coluna_atk = 1;
+			x_atk = 0;
+		}
 	}
 }

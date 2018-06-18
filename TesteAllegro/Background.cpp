@@ -6,9 +6,6 @@ Background::Background()
 }
 Background::~Background()
 {
-	al_destroy_bitmap(imagev1);
-	al_destroy_bitmap(imagev2);
-	al_destroy_bitmap(imagev3);
 	al_destroy_bitmap(image2);
 	al_destroy_bitmap(image3);
 	al_destroy_bitmap(image4);

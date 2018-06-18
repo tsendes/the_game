@@ -27,6 +27,9 @@ void Ghost::create_Ghost()
 	health = HEALTH_GHOST;
 	damage = DMG_GHOST;
 	is_present = true;
+	enemy_score = 5;
+	count_inv = 30;
+	invencible = false;
 }
 
 void Ghost::moveEnemy(float x, float y)

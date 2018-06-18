@@ -1,11 +1,14 @@
 #pragma once
-#include "Player.h"
+#include "Character.h"
 
 class Enemy : public Character
 {
 protected:
 	char name[30];
 	int invert;
+	float enemy_score;
+	
+
 public:
 	Enemy();
 	~Enemy();
@@ -13,4 +16,7 @@ public:
 	virtual void moveEnemy(float x, float y) {}
 	virtual void attackEnemy() = 0;
 	bool hasVision(float vision);
+	float getEnemy_score();
+	
+
 };

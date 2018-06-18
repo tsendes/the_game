@@ -1,8 +1,3 @@
-#include <string>
-#include <inttypes.h>
-#include <stdio.h>
-#include "ListEnt.h"
-
 #include "Game.h"
 
 
@@ -11,8 +6,6 @@ Game::Game()
 	event_queue = al_create_event_queue();
 	tick_s = al_create_timer(1.0 / FPS);
 	register_interrupts();
-
-	font.create_font();
 
 	health_bar = al_create_bitmap(80, 10);
 	al_set_target_bitmap(health_bar);
@@ -27,29 +20,29 @@ Game::Game()
 	adjust1 = 1.0;
 	adjust2 = 1.0;
 	adjust3 = 1.0;
-	//s1.buildStage1();
+	
+	srand(time(NULL));
+
 	
 	for (int i = 0; i < num_bar; i++)
-	{
-		srand(time(NULL));
+	{	
 		ghost[i] = new Ghost;
 		barbarian[i] = new Barbarian;
-		//tribesman[i] = new Tribesman;
-		barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + rand() % 1948);
-		//al_rest(1);
-		//tribesman[i]->setBouncer_x(tribesman[i]->getBouncer_x() + rand() % 948);
-		//al_rest(1);
-		ghost[i]->setBouncer_x(ghost[i]->getBouncer_x() + rand() % 3948);
-		//al_rest(1);
+		barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + rand() % 948);
+		ghost[i]->setBouncer_x(ghost[i]->getBouncer_x() + rand() % 1548);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		block[i] = new Block;
+		block[i]->field = block[i]->desert;
+		block[i]->setBouncer_x(800*i);
 	}
 
 	cameraX = 0;
 	worldW = SCREEN_W * 3;
-
-	al_install_audio();
+	
 
 	al_hide_mouse_cursor(display->display); 
-	draw_screen();
 	al_start_timer(tick_s); 
 	run_game();
 }
@@ -57,7 +50,8 @@ Game::Game()
 Game::~Game()
 {
 	delete (display);
-	delete (block);
+	for (int i = 0; i < 6; i++)
+		delete (block[i]);
 	delete (environment);
 	delete(knight);
 	delete(lancer);
@@ -120,7 +114,7 @@ void Game::error_check()
 			al_show_native_message_box(display->display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 			throw 1;
 		}
-		if (!block->block)
+		if (!block[0]->block)
 		{
 			al_show_native_message_box(display->display, "Error", "Error", "failed to create field block!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 			throw 1;
@@ -155,9 +149,10 @@ void Game::draw_screen()
 
 void Game::run_game()
 {
+	//my_stage1->buildStage1(this);
 	error_check();
+	draw_screen();
 	int timer = 0;
-	//al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 	while (flag.finish)
 	{
 		while (flag.menu)
@@ -231,8 +226,8 @@ void Game::run_game()
 					key[ENTER_KEY] = true;
 					if (flag.button1 == true)
 					{
-						//EEEEEUUU VOOOUUU TE LEVAAAARRRR AONDE QUER Q EU VAAAARRR
 						flag.menu = false;
+						flag.doexit = true;
 					}
 					else if (flag.button2 == true)
 					{
@@ -244,10 +239,6 @@ void Game::run_game()
 			{
 				switch (ev_menudo.keyboard.keycode)
 				{
-				case ALLEGRO_KEY_UP:
-					key[KEY_UP] = false;
-					break;
-
 				case ALLEGRO_KEY_DOWN:
 					key[KEY_DOWN] = false;
 					break;
@@ -262,14 +253,8 @@ void Game::run_game()
 
 				case ALLEGRO_KEY_ESCAPE:
 					flag.menu = false;
+					flag.finish = true;
 					break;
-				case ALLEGRO_KEY_Z:
-					key[Z_KEY] = false;
-					flag.atk = false;
-					break;
-				case ALLEGRO_KEY_X:
-					key[X_KEY] = false;
-					flag.atk_x = false;
 				}
 			}
 
@@ -320,14 +305,16 @@ void Game::run_game()
 					al_rest(3);
 
 					flag.doexit = false;
-					createGame(this);
 					flag.menu = true;
+					setStage(1);
+					createGame(this);
 				}
-				// A MESMA COISA SÓ Q PRO BOSS
 			}
 			else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) //evento de fechar a telinha
 			{
-				break;
+				flag.doexit = false;
+				flag.finish = false;
+				flag.menu = false;
 			}
 
 			else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) //evento de tecla pressionada
@@ -376,11 +363,6 @@ void Game::run_game()
 				case ALLEGRO_KEY_UP:
 					key[KEY_UP] = false;
 					break;
-
-				case ALLEGRO_KEY_DOWN:
-					key[KEY_DOWN] = false;
-					break;
-
 				case ALLEGRO_KEY_LEFT:
 					key[KEY_LEFT] = false;
 					break;
@@ -390,6 +372,8 @@ void Game::run_game()
 					break;
 
 				case ALLEGRO_KEY_ESCAPE:
+					flag.menu = true;
+					flag.doexit = false;
 					break;
 				case ALLEGRO_KEY_Z:
 					key[Z_KEY] = false;
@@ -413,12 +397,8 @@ void Game::run_game()
 				al_draw_scaled_bitmap(environment->imagev2, 0, 0, environment->w, environment->h, SCREEN_W + cameraX * -1, 0, 1366, 768, 0); //background em escala
 				al_draw_scaled_bitmap(environment->imagev3, 0, 0, environment->w, environment->h, SCREEN_W * 2 + cameraX * -1, 0, 1366, 768, 0); //background em escala
 
-				al_draw_bitmap(block->block, block->bouncer_x + cameraX * -1, block->bouncer_y, 0);
-				al_draw_bitmap(block->block, block->bouncer_x + cameraX * -1 + BLOCK_W * 1, block->bouncer_y, 0);
-				al_draw_bitmap(block->block, block->bouncer_x + cameraX * -1 + BLOCK_W * 2, block->bouncer_y, 0);
-				al_draw_bitmap(block->block, block->bouncer_x + cameraX * -1 + BLOCK_W * 3, block->bouncer_y, 0);
-				al_draw_bitmap(block->block, block->bouncer_x + cameraX * -1 + BLOCK_W * 4, block->bouncer_y, 0);
-				al_draw_bitmap(block->block, block->bouncer_x + cameraX * -1 + BLOCK_W * 5, block->bouncer_y, 0);
+				for (int i = 0; i < 6; i++)
+					al_draw_bitmap(block[i]->field, block[i]->getBouncer_x() + cameraX * -1, block[i]->getBouncer_y(), 0);
 
 
 				for (int i = 0; i < num_bar; i++)
@@ -429,7 +409,7 @@ void Game::run_game()
 						if (ghost[i]->getisPresent())
 						{
 							al_draw_scaled_bitmap(ghost[i]->getWalk_sprite(), ghost[i]->getX_atual(), ghost[i]->getY_atual(), ghost[i]->getLarg(), ghost[i]->getAlt(), ghost[i]->getBouncer_x() + cameraX * -1, ghost[i]->getBouncer_y(), ghost[i]->getLarg() * 2, ghost[i]->getAlt() * 2, knight->getBouncer_x() - ghost[i]->getBouncer_x() > 0 ? ALLEGRO_FLIP_HORIZONTAL : 0);
-							if (!colliderY(knight->getBouncer_y(), HEIGHT, ghost[i]->getBouncer_y(), ghost[i]->getAlt()) && !colliderX(knight->getBouncer_x(), knight->getLarg(), ghost[i]->getBouncer_x(), ghost[i]->getLarg()))
+							if (!colliderY(knight->getBouncer_y(), HEIGHT, ghost[i]->getBouncer_y(), ghost[i]->getAlt()) || !colliderX(knight->getBouncer_x(), knight->getLarg(), ghost[i]->getBouncer_x(), ghost[i]->getLarg()))
 							{
 								ghost[i]->moveEnemy(knight->getBouncer_x(), knight->getBouncer_y());
 							}
@@ -481,6 +461,10 @@ void Game::run_game()
 								{
 									tribesman[i]->setHealth(tribesman[i]->getHealth() - knight->getDamage());
 								}
+								if (!flag.atk && flag.atk_x)
+								{
+									tribesman[i]->setHealth(tribesman[i]->getHealth() - lancer->getDamage());
+								}
 							}
 
 						}
@@ -494,7 +478,8 @@ void Game::run_game()
 								al_draw_scaled_bitmap(barbarian[i]->field, barbarian[i]->getX_atual(), barbarian[i]->getY_atual(), barbarian[i]->getLarg(), barbarian[i]->getAlt(), barbarian[i]->getBouncer_x() + cameraX * -1, barbarian[i]->getBouncer_y(), barbarian[i]->getLarg() * 3, barbarian[i]->getAlt() * 3, barbarian[i]->getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
 							else
 								al_draw_scaled_bitmap(barbarian[i]->field, barbarian[i]->getX_atk(), barbarian[i]->getY_atk(), barbarian[i]->getLarg_atk(), barbarian[i]->getAlt_atk(), barbarian[i]->getBouncer_x() + cameraX * -1, barbarian[i]->getBouncer_y(), barbarian[i]->getLarg_atk() * 3, barbarian[i]->getAlt_atk() * 3, barbarian[i]->getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
-							if (!colliderX(knight->getBouncer_x(), knight->getLarg(), barbarian[i]->getBouncer_x(), barbarian[i]->getLarg()))
+							
+							if (!colliderX(knight->getBouncer_x(), knight->getLarg(), barbarian[i]->getBouncer_x(), barbarian[i]->getLarg()) && barbarian[i]->getInvencible() == false)
 							{
 								barbarian[i]->field = barbarian[i]->getWalk_sprite();
 								barbarian[i]->moveEnemy(knight->getBouncer_x(), knight->getBouncer_y());
@@ -506,16 +491,35 @@ void Game::run_game()
 							if (colliderX(knight->getBouncer_x() + cameraX * -1, knight->getLarg(), barbarian[i]->getBouncer_x() + cameraX * -1, barbarian[i]->getLarg()) ||
 								colliderX(lancer->getBouncer_x() + cameraX * -1, lancer->getLarg(), barbarian[i]->getBouncer_x() + cameraX * -1, barbarian[i]->getLarg()))
 							{
-								barbarian[i]->field = barbarian[i]->getAttack_sprite();
-								barbarian[i]->attackEnemy();
-								knight->setHealth(knight->getHealth() - barbarian[i]->getDamage()*.007);
-								if (flag.atk && !flag.atk_x)
+
+								if (barbarian[i]->getInvencible() == false)
+								{
+									barbarian[i]->field = barbarian[i]->getAttack_sprite();
+									barbarian[i]->attackEnemy();
+									knight->setHealth(knight->getHealth() - barbarian[i]->getDamage()*.007);
+								}
+								if (flag.atk && !flag.atk_x && barbarian[i]->getInvencible() == false)
 								{
 									barbarian[i]->setHealth(barbarian[i]->getHealth() - knight->getDamage());
+									barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + 100);
+									barbarian[i]->setInvencible(true);
 								}
-								if (!flag.atk && flag.atk_x)
+								else if (!flag.atk && flag.atk_x && barbarian[i]->getInvencible() == false)
 								{
 									barbarian[i]->setHealth(barbarian[i]->getHealth() - lancer->getDamage());
+									barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + 100);
+									barbarian[i]->setInvencible(true);
+								}
+								
+							}
+							if(barbarian[i]->getInvencible() == true)
+							{
+								barbarian[i]->setCount_inv(barbarian[i]->getCount_inv() - 1);
+								barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + 2); //bloquear movimento
+								if (barbarian[i]->getCount_inv() <= 0)
+								{
+									barbarian[i]->setCount_inv(60);
+									barbarian[i]->setInvencible(false);
 								}
 							}
 						}
@@ -529,19 +533,66 @@ void Game::run_game()
 							al_draw_scaled_bitmap(boss.field, boss.getX_atual(), boss.getY_atual(), boss.getLarg(), boss.getAlt(), boss.getBouncer_x() + cameraX * -1, boss.getBouncer_y(), boss.getLarg() * 3, boss.getAlt() * 3, boss.getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
 						else
 							al_draw_scaled_bitmap(boss.field, boss.getX_atk(), boss.getY_atk(), boss.getLarg_atk(), boss.getAlt_atk(), boss.getBouncer_x() + cameraX * -1, boss.getBouncer_y(), boss.getLarg_atk() * 3, boss.getAlt_atk() * 3, boss.getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
+
 						if (!colliderX(knight->getBouncer_x() + cameraX * -1, knight->getLarg(), boss.getBouncer_x() + cameraX * -1, boss.getLarg()) && !colliderY(knight->getBouncer_y(), HEIGHT, boss.getBouncer_y(), boss.getAlt()))
 						{
-							boss.field = boss.getWalk_sprite();
-							boss.moveEnemy(knight->getBouncer_x(), knight->getBouncer_y());
+							if (boss.getHealth() >= 2500)
+							{
+								boss.field = boss.getWalk_sprite();
+								boss.moveEnemy(knight->getBouncer_x(), knight->getBouncer_y());
+							}
 						}
 						else
 						{
+							boss.field = boss.getAttack_sprite();
 							boss.attackEnemy();
 							knight->setHealth(knight->getHealth() - boss.getDamage()*.007);
+
+							if (flag.atk && !flag.atk_x)
+							{
+								if (boss.getInvencible() == false)
+								{
+									boss.setHealth(boss.getHealth() - knight->getDamage());
+									boss.setInvencible(true);
+								}
+								else
+								{
+									boss.setCount_inv(boss.getCount_inv() - 1);
+									if (boss.getCount_inv() <= 0)
+									{
+										boss.setInvencible(false);
+										boss.setCount_inv(30);
+									}
+								}
+									
+								
+							}
+							if (!flag.atk && flag.atk_x)
+							{
+								boss.setHealth(boss.getHealth() - lancer->getDamage());
+							}
+							
+						}
+						if (boss.getHealth() <= 2500)
+						{
+							boss.field = boss.getUlt_sprite();
+							al_draw_scaled_bitmap(boss.field, boss.getX_atk(), boss.getY_atk(), boss.getLarg_atk(), boss.getAlt_atk(), boss.getBouncer_x(), boss.getBouncer_y(), boss.getLarg_atk() * 3, boss.getAlt_atk() * 3, boss.getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
+							knight->setHealth(knight->getHealth() - boss.getDamage_Ult()*.003);
 						}
 						if (boss.getHealth() <= 0)
 						{
 							boss.setisPresent(false);
+							al_clear_to_color(al_map_rgb(0, 0, 0));
+							al_flip_display();
+							al_rest(1);
+							al_draw_text(font.font, al_map_rgb(184, 134, 11), SCREEN_W / 2.0, SCREEN_H / 2.0, ALLEGRO_ALIGN_CENTER, "VICTORY ACHIEVED");
+							al_flip_display();
+							al_rest(3);
+
+							flag.doexit = false;
+							flag.menu = true;
+							setStage(1);
+							createGame(this);
 						}
 					}
 
@@ -550,21 +601,32 @@ void Game::run_game()
 				{
 					if (knight->getLeft())
 					{
-						if(getStage() == 3)
-							al_draw_scaled_bitmap(knight->getAttack_sprite(), knight->getX_atk(), knight->getY_atk(), knight->getLarg_atk(), knight->getAlt_atk(), banner->getBouncer_x() + cameraX * -1, knight->getBouncer_y(), knight->getLarg_atk() * 3, knight->getAlt_atk() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-						else
-							al_draw_scaled_bitmap(knight->getAttack_sprite(), knight->getX_atk(), knight->getY_atk(), knight->getLarg_atk(), knight->getAlt_atk(), knight->getBouncer_x() + cameraX * -1, knight->getBouncer_y(), knight->getLarg_atk() * 3, knight->getAlt_atk() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-						if (getStage() == 2)
+						if (getStage() == 3)
 						{
-							al_draw_scaled_bitmap(lancer->getWalk_sprite(), lancer->getX_atual(), lancer->getY_atual(), lancer->getLarg(), lancer->getAlt(), knight->getBouncer_x() + cameraX * -1, lancer->getBouncer_y(), lancer->getLarg() * 3, lancer->getAlt() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-							al_draw_scaled_bitmap(knight->getWalk_sprite(), knight->getX_atual(), knight->getY_atual(), knight->getLarg(), knight->getAlt(), lancer->getBouncer_x() + cameraX * -1, knight->getBouncer_y(), knight->getLarg() * 3, knight->getAlt() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							al_draw_scaled_bitmap(knight->getAttack_sprite(), knight->getX_atk(), knight->getY_atk(), knight->getLarg_atk(), knight->getAlt_atk(), banner->getBouncer_x() + cameraX * -1 - 35, knight->getBouncer_y(), knight->getLarg_atk() * 3, knight->getAlt_atk() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							al_draw_scaled_bitmap(lancer->getWalk_sprite(), lancer->getX_atual(), lancer->getY_atual(), lancer->getLarg(), lancer->getAlt(), knight->getBouncer_x() + cameraX * -1 - 35, lancer->getBouncer_y(), lancer->getLarg() * 3, lancer->getAlt() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							al_draw_scaled_bitmap(banner->getWalk_sprite(), banner->getX_atual(), banner->getY_atual(), banner->getLarg(), banner->getAlt(), knight->getBouncer_x() + cameraX * -1, banner->getBouncer_y(), banner->getLarg() * 3, banner->getAlt() * 3, banner->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+						}
+						else if (getStage() == 2)
+						{
+							al_draw_scaled_bitmap(lancer->getWalk_sprite(), lancer->getX_atual(), lancer->getY_atual(), lancer->getLarg(), lancer->getAlt(), knight->getBouncer_x() + cameraX * -1 - 35, lancer->getBouncer_y(), lancer->getLarg() * 3, lancer->getAlt() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							al_draw_scaled_bitmap(knight->getAttack_sprite(), knight->getX_atk(), knight->getY_atk(), knight->getLarg_atk(), knight->getAlt_atk(), lancer->getBouncer_x() + cameraX * -1 - 35, knight->getBouncer_y(), knight->getLarg_atk() * 3, knight->getAlt_atk() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+						}
+						else if(getStage() == 1)
+						{
+							al_draw_scaled_bitmap(knight->getAttack_sprite(), knight->getX_atk(), knight->getY_atk(), knight->getLarg_atk(), knight->getAlt_atk(), knight->getBouncer_x() + cameraX * -1 - 35, knight->getBouncer_y(), knight->getLarg_atk() * 3, knight->getAlt_atk() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 						}
 					}
 					else
 					{
 						al_draw_scaled_bitmap(knight->getAttack_sprite(), knight->getX_atk(), knight->getY_atk(), knight->getLarg_atk(), knight->getAlt_atk(), knight->getBouncer_x() + cameraX * -1, knight->getBouncer_y(), knight->getLarg_atk() * 3, knight->getAlt_atk() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-						if(getStage() > 1)
+
+						if (getStage() > 1)
+						{
 							al_draw_scaled_bitmap(lancer->getWalk_sprite(), lancer->getX_atual(), lancer->getY_atual(), lancer->getLarg(), lancer->getAlt(), lancer->getBouncer_x() + cameraX * -1, lancer->getBouncer_y(), lancer->getLarg() * 3, lancer->getAlt() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							if(getStage() > 2)
+								al_draw_scaled_bitmap(banner->getWalk_sprite(), banner->getX_atual(), banner->getY_atual(), banner->getLarg(), banner->getAlt(), banner->getBouncer_x() + cameraX * -1, banner->getBouncer_y(), banner->getLarg() * 3, banner->getAlt() * 3, banner->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+						}
 					}
 				}
 				if (flag.atk_x == true && flag.atk == false && getStage() > 1) //atk Lancer
@@ -573,31 +635,29 @@ void Game::run_game()
 					{
 						if (getStage() == 3)
 						{
-							al_draw_scaled_bitmap(lancer->getAttack_sprite(), lancer->getX_atk(), lancer->getY_atk(), lancer->getLarg_atk(), lancer->getAlt_atk(), lancer->getBouncer_x() + cameraX * -1, lancer->getBouncer_y(), lancer->getLarg_atk() * 3, lancer->getAlt_atk() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-							al_draw_scaled_bitmap(knight->getWalk_sprite(), knight->getX_atual(), knight->getY_atual(), knight->getLarg(), knight->getAlt(), banner->getBouncer_x() + cameraX * -1, knight->getBouncer_y(), knight->getLarg() * 3, knight->getAlt() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							al_draw_scaled_bitmap(lancer->getAttack_sprite(), lancer->getX_atk(), lancer->getY_atk(), lancer->getLarg_atk(), lancer->getAlt_atk(), lancer->getBouncer_x() + cameraX * -1 , lancer->getBouncer_y(), lancer->getLarg_atk() * 3, lancer->getAlt_atk() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							al_draw_scaled_bitmap(knight->getWalk_sprite(), knight->getX_atual(), knight->getY_atual(), knight->getLarg(), knight->getAlt(), banner->getBouncer_x() + cameraX * -1 , knight->getBouncer_y(), knight->getLarg() * 3, knight->getAlt() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							al_draw_scaled_bitmap(banner->getWalk_sprite(), banner->getX_atual(), banner->getY_atual(), banner->getLarg(), banner->getAlt(), knight->getBouncer_x() + cameraX * -1, banner->getBouncer_y(), banner->getLarg() * 3, banner->getAlt() * 3, banner->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 						}
-						else if(getStage() == 2)
-							al_draw_scaled_bitmap(lancer->getAttack_sprite(), lancer->getX_atk(), lancer->getY_atk(), lancer->getLarg_atk(), lancer->getAlt_atk(), knight->getBouncer_x() + cameraX * -1, lancer->getBouncer_y(), lancer->getLarg_atk() * 3, lancer->getAlt_atk() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+						else if (getStage() == 2)
+						{
+							al_draw_scaled_bitmap(lancer->getAttack_sprite(), lancer->getX_atk(), lancer->getY_atk(), lancer->getLarg_atk(), lancer->getAlt_atk(), knight->getBouncer_x() + cameraX * -1 - 35, lancer->getBouncer_y(), lancer->getLarg_atk() * 3, lancer->getAlt_atk() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							al_draw_scaled_bitmap(knight->getWalk_sprite(), knight->getX_atual(), knight->getY_atual(), knight->getLarg(), knight->getAlt(), lancer->getBouncer_x() + cameraX * -1, knight->getBouncer_y(), knight->getLarg() * 3, knight->getAlt() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+						}
 					}
 					else
 					{
 						al_draw_scaled_bitmap(lancer->getAttack_sprite(), lancer->getX_atk(), lancer->getY_atk(), lancer->getLarg_atk(), lancer->getAlt_atk(), lancer->getBouncer_x() + cameraX * -1, lancer->getBouncer_y(), lancer->getLarg_atk() * 3, lancer->getAlt_atk() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 						al_draw_scaled_bitmap(knight->getWalk_sprite(), knight->getX_atual(), knight->getY_atual(), knight->getLarg(), knight->getAlt(), knight->getBouncer_x() + cameraX * -1, knight->getBouncer_y(), knight->getLarg() * 3, knight->getAlt() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+						if(getStage() > 2)
+							al_draw_scaled_bitmap(banner->getWalk_sprite(), banner->getX_atual(), banner->getY_atual(), banner->getLarg(), banner->getAlt(), banner->getBouncer_x() + cameraX * -1, banner->getBouncer_y(), banner->getLarg() * 3, banner->getAlt() * 3, banner->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 					}
 				}
-				
-				if (flag.atk == true || flag.atk_x == true && getStage() > 2)
-				{
-					if (banner->getLeft())
-						al_draw_scaled_bitmap(banner->getWalk_sprite(), banner->getX_atual(), banner->getY_atual(), banner->getLarg(), banner->getAlt(), knight->getBouncer_x() + cameraX * -1, banner->getBouncer_y(), banner->getLarg() * 3, banner->getAlt() * 3, banner->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-					else
-						al_draw_scaled_bitmap(banner->getWalk_sprite(), banner->getX_atual(), banner->getY_atual(), banner->getLarg(), banner->getAlt(), banner->getBouncer_x() + cameraX * -1, banner->getBouncer_y(), banner->getLarg() * 3, banner->getAlt() * 3, banner->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-				}
 				knight->attack(&flag.atk, &flag.atk_x, key);
+
 				if(getStage() > 1)
 					lancer->attack(&flag.atk, &flag.atk_x, key);
-				if (getStage() > 2)
-					banner->attack(&flag.atk, &flag.atk_x, key);
+
 				if ((flag.atk == false && flag.atk_x == false) || (flag.atk == true && flag.atk_x == true))
 				{
 					if (knight->getLeft())
@@ -607,7 +667,7 @@ void Game::run_game()
 						else if (getStage() == 2)
 						{
 							al_draw_scaled_bitmap(knight->getWalk_sprite(), knight->getX_atual(), knight->getY_atual(), knight->getLarg(), knight->getAlt(), lancer->getBouncer_x() + cameraX * -1, knight->getBouncer_y(), knight->getLarg() * 3, knight->getAlt() * 3, knight->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
-							al_draw_scaled_bitmap(lancer->getWalk_sprite(), lancer->getX_atual(), lancer->getY_atual(), lancer->getLarg(), lancer->getAlt(), knight->getBouncer_x() + cameraX * -1, lancer->getBouncer_y(), lancer->getLarg() * 3, lancer->getAlt() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
+							al_draw_scaled_bitmap(lancer->getWalk_sprite(), lancer->getX_atual(), lancer->getY_atual(), lancer->getLarg(), lancer->getAlt(), knight->getBouncer_x() + cameraX * -1 - 35, lancer->getBouncer_y(), lancer->getLarg() * 3, lancer->getAlt() * 3, lancer->getLeft() ? ALLEGRO_FLIP_HORIZONTAL : 0);
 						}
 						else
 						{
@@ -654,7 +714,6 @@ void Game::run_game()
 				createGame(this);
 			}
 		}
-		flag.doexit = true;
 	}
 }
 
@@ -709,82 +768,66 @@ void Game::createGame(Game* stage)
 {
 	if (stage->getStage() == 1)
 	{
-		event_queue = al_create_event_queue();
-		tick_s = al_create_timer(1.0 / FPS);
-		register_interrupts();
-
-		font.create_font();
-		health_bar = al_create_bitmap(80, 10);
-		al_set_target_bitmap(health_bar);
-		al_clear_to_color(al_map_rgb(0, 255, 0));
-		al_set_target_bitmap(al_get_backbuffer(display->display));
-
-		off_bar = al_create_bitmap(82, 12);
-		al_set_target_bitmap(off_bar);
-		al_clear_to_color(al_map_rgb(0, 0, 0));
-		al_set_target_bitmap(al_get_backbuffer(display->display));
 		//s1.buildStage1();
-
+		srand(time(NULL));
 		for (int i = 0; i < num_bar; i++)
 		{
-			srand(time(NULL));
+			
 			ghost[i] = new Ghost;
 			barbarian[i] = new Barbarian;
-			barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + rand() % 1948);
-			ghost[i]->setBouncer_x(ghost[i]->getBouncer_x() + rand() % 3948);
+
+			barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + rand() % 1348);
+			ghost[i]->setBouncer_x(ghost[i]->getBouncer_x() + rand() % 2348);
 		}
 
 		cameraX = 0;
 		worldW = SCREEN_W * 3;
+		knight->setBouncer_x(144);
+		lancer->setBouncer_x(69);
+		banner->setBouncer_x(5);
+		knight->setHealth(100);
 
-		al_hide_mouse_cursor(display->display);
+		for (int i = 0; i < 6; i++)
+			block[i]->field = block[i]->desert;
+
+		mouse.mouse = mouse.undead;
+		environment->imagev1 = environment->image1;
+		environment->imagev2 = environment->image2;
+		environment->imagev3 = environment->image3;
+		environment->w = 1920;
+		environment->h = 1080;
+
 		draw_screen();
-		al_start_timer(tick_s);
 		run_game();
 	}
 	else if (stage->getStage() == 2)
 	{
-		for (int i = 0; i < num_ghost; i++)
-			delete(barbarian[i]);
-		for (int i = 0; i < num_bar; i++)
-			delete(ghost[i]);
-
-		block->block = block->forest;
+		if (knight->getHealth() > 0)
+		{
+			for (int i = 0; i < num_ghost; i++)
+				delete(barbarian[i]);
+			for (int i = 0; i < num_bar; i++)
+				delete(ghost[i]);
+			for (int i = 0; i < 6; i++)
+				block[i]->block = block[i]->forest;
+		}
 		mouse.mouse = mouse.orc;
 		environment->imagev1 = environment->image4;
 		environment->imagev2 = environment->image5;
 		environment->imagev3 = environment->image6;
 		environment->w = 900;
 		environment->h = 449;
-		//event_queue = al_create_event_queue();
-		//tick_s = al_create_timer(1.0 / FPS);
-		//register_interrupts();
 
-		font.create_font();
-
-		health_bar = al_create_bitmap(80, 10);
-		al_set_target_bitmap(health_bar);
-		al_clear_to_color(al_map_rgb(0, 255, 0));
-		al_set_target_bitmap(al_get_backbuffer(display->display));
-
-		off_bar = al_create_bitmap(82, 12);
-		al_set_target_bitmap(off_bar);
-		al_clear_to_color(al_map_rgb(0, 0, 0));
-		al_set_target_bitmap(al_get_backbuffer(display->display));
 		//s1.buildStage1();
 
 		for (int i = 0; i < num_bar; i++)
 		{
 			srand(time(NULL));
 			ghost[i] = new Ghost;
-			//barbarian[i] = new Barbarian;
 			tribesman[i] = new Tribesman;
-			//barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + rand() % 1948);
-			//al_rest(1);
+
 			tribesman[i]->setBouncer_x(tribesman[i]->getBouncer_x() + rand() % 1948);
-			//al_rest(1);
 			ghost[i]->setBouncer_x(ghost[i]->getBouncer_x() + rand() % 3948);
-			//al_rest(1);
 		}
 
 		cameraX = 0;
@@ -792,36 +835,28 @@ void Game::createGame(Game* stage)
 		lancer->setBouncer_x(5);
 		worldW = SCREEN_W * 3;
 
-		al_hide_mouse_cursor(display->display);
 		draw_screen();
-		//al_start_timer(tick_s);
 		run_game();
 	}
 	else if(stage->getStage() == 3)
 	{
-		for (int i = 0; i < num_trib; i++)
-			delete(tribesman[i]);
-		for (int i = 0; i < num_bar; i++)
-			delete(ghost[i]);
-
-		health_bar = al_create_bitmap(80, 10);
-		al_set_target_bitmap(health_bar);
-		al_clear_to_color(al_map_rgb(0, 255, 0));
-		al_set_target_bitmap(al_get_backbuffer(display->display));
-
-		off_bar = al_create_bitmap(82, 12);
-		al_set_target_bitmap(off_bar);
-		al_clear_to_color(al_map_rgb(0, 0, 0));
-		al_set_target_bitmap(al_get_backbuffer(display->display));
+		if (knight->getHealth() > 0)
+		{
+			for (int i = 0; i < num_trib; i++)
+				delete(tribesman[i]);
+			for (int i = 0; i < num_bar; i++)
+				delete(ghost[i]);
+		}
 		//s1.buildStage1();
 
 		boss.create_Boss();
 
 		cameraX = 0;
 		worldW = SCREEN_W;
-		knight->setBouncer_x(35);
-		lancer->setBouncer_x(5);
-		block->block = block->boss;
+		knight->setBouncer_x(40);
+		lancer->setBouncer_x(10);
+		for (int i = 0; i < 6; i++)
+			block[i]->field = block[i]->boss;
 		mouse.mouse = mouse.night_elf;
 		environment->imagev1 = environment->image7;
 		environment->imagev2 = environment->image7;
@@ -829,14 +864,13 @@ void Game::createGame(Game* stage)
 		environment->w = 1920;
 		environment->h = 1080;
 
-		al_hide_mouse_cursor(display->display);
 		draw_screen();
-		al_start_timer(tick_s);
 		run_game();
 	}
 	else
 	{
 		flag.doexit = false;
-		flag.finish = flag.menu = true;
+		flag.finish = true;
+		flag.menu = true;
 	}
 }

@@ -1,6 +1,3 @@
-﻿  Barracks.cpp
-  Bush.cpp
-  Object.cpp
-  Rock.cpp
-  Generating Code...
-  TesteAllegro.vcxproj -> C:\Users\leofi\Desktop\Tecprog\Trabalho\the_game\Debug\TesteAllegro.exe
+﻿  Game.cpp
+c:\git\the_game\testeallegro\game.cpp(123): warning C4101: 'error': unreferenced local variable
+  TesteAllegro.vcxproj -> C:\GIT\the_game\Debug\TesteAllegro.exe

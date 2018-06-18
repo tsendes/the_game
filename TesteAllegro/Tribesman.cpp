@@ -7,8 +7,8 @@ Tribesman::Tribesman()
 
 Tribesman::~Tribesman()
 {
-	al_destroy_bitmap(walk_sprite);
-	al_destroy_bitmap(attack_sprite);
+//	al_destroy_bitmap(walk_sprite);
+//	al_destroy_bitmap(attack_sprite);
 }
 void Tribesman::create_Tribesman()
 {
@@ -34,6 +34,9 @@ void Tribesman::create_Tribesman()
 	health = HEALTH_HUMANOID;
 	damage = DMG_HUMANOID;
 	is_present = true;
+	enemy_score = 15;
+	count_inv = 30;
+	invencible = false;
 }
 
 void Tribesman::attackEnemy()

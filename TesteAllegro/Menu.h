@@ -1,5 +1,4 @@
 #pragma once
-#include "Game.h"
 #include <allegro5/allegro.h>
 
 class Menu

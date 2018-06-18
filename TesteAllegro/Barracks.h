@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+
 class Barracks : public Object
 {
 private:

@@ -13,10 +13,12 @@ public:
 	void create_Boss();
 	//void move();
 	void boss_Ult();
-	void attackEnemy() {}
+	void attackEnemy();
 	void moveEnemy(float x, float y);
 	void setDamage_Ult(float dmg);
 	float getDamage_Ult();
 	void setCharge_Bar(int bar);
 	int getCharge_Bar();
+	void setUlt_sprite(ALLEGRO_BITMAP* sp);
+	ALLEGRO_BITMAP* getUlt_sprite();
 };

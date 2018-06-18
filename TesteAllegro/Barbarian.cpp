@@ -33,6 +33,9 @@ void Barbarian::create_Barbarian()
 	health = HEALTH_HUMANOID;
 	damage = DMG_HUMANOID;
 	is_present = true;
+	enemy_score = 10;
+	count_inv = 30;
+	invencible = false;
 }
 
 void Barbarian::attackEnemy()

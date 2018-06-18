@@ -42,7 +42,7 @@ void Knight::attack(bool* atk, bool* atk_x, bool* key)
 	if (*atk == true && *atk_x == false) //Atk Knight
 	{
 		count_atk++;
-		if (count_atk == 6)
+		if (count_atk == 3)
 		{
 			count_atk = 0;
 			coluna_atk++;

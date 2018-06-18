@@ -14,6 +14,8 @@ protected:
 	int y_atk; // posição y de ataque no mapa sprite
 	bool left = false;
 	float damage;
+	bool invencible;
+	int count_inv;
 public:
 	int count_atk;
 	int coluna_atk;
@@ -33,6 +35,10 @@ public:
 	float getDamage();
 	ALLEGRO_BITMAP* getWalk_sprite();
 	ALLEGRO_BITMAP* getAttack_sprite();
+	void setInvencible(bool set);
+	bool getInvencible();
+	void setCount_inv(int i);
+	int getCount_inv();
 
 	
 	

@@ -1,6 +1,5 @@
 #pragma once
 #include "Chart.h"
-#include "Entity.h"
 #include "Block.h"
 
 class ListEnt

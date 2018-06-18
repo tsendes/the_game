@@ -13,6 +13,8 @@ void Block::create_field(int x, int y)
 	block = desert;
 	bouncer_x = x + 0;
 	bouncer_y = 686 - y;
+	larg = 800;
+	alt = 80;
 }
 
 Block::~Block()

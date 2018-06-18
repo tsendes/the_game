@@ -69,3 +69,19 @@ ALLEGRO_BITMAP* Character::getAttack_sprite()
 {
 	return attack_sprite;
 }
+void Character::setInvencible(bool set)
+{
+	invencible = set;
+}
+bool Character::getInvencible()
+{
+	return invencible;
+}
+void Character::setCount_inv(int i)
+{
+	count_inv = i;
+}
+int Character::getCount_inv()
+{
+	return count_inv;
+}

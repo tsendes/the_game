@@ -1,15 +1,14 @@
 #pragma once
 #include <allegro5/allegro.h>
+#include "Object.h"
 
-class Block
+class Block : public Object
 {
 public:
 	ALLEGRO_BITMAP * block;
 	ALLEGRO_BITMAP * desert;
 	ALLEGRO_BITMAP * forest;
 	ALLEGRO_BITMAP * boss;
-	float bouncer_x; //local de inicializaçao
-	float bouncer_y; //local de inicializaçao
 
 	Block();
 	~Block();

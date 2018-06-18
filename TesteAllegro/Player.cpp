@@ -26,16 +26,24 @@ ALLEGRO_BITMAP* Player::getIcon()
 {
 	return icon;
 }
+void Player::setScore(float sc)
+{
+	score = sc;
+}
+float Player::getScore()
+{
+	return score;
+}
 void Player::move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* redraw, bool* exaust, bool* key)
 {
 	if (key[KEY_UP] && bouncer_y >= 4.0 && *exaust == false)
 	{
 
 		*timer += 1;
-		if (*timer >= 35)
+		if (*timer >= 10)
 		{	
 			*timer = 0;
-			*adjust /= 1.5;
+			*adjust /= 1.9;
 		}
 		bouncer_y -= 9.8 * (*adjust);
 		if (*adjust <= 0.5)
