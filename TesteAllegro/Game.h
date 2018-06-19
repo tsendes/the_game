@@ -4,7 +4,7 @@
 #include <time.h>
 #include <stdio.h>
 #include "Stage.h"
-//#include "Stage1.h"
+#include "Stage1.h"
 #include "Keyboard.h"
 #include "Block.h"
 #include "Mouse.h"
@@ -67,14 +67,16 @@ protected:
 
 	Boss boss;
 
-	Mouse mouse; //coisas do mouse
+	Mouse mouse; //coisas do mous
 	Font font; //fonte para escrita na telinha
 	Keyboard keyboard; //coisas do teclado
 
 	float cameraX;
 	float worldW;
 
-	//Stage1* my_stage1 = new Stage1;
+	Stage1* my_stage1;
+		
+	my_stage1 = new Stage1;
 
 	uint8_t colliderX(float x1, int larg1, float x2, int larg2);
 	uint8_t colliderY(float y1, int alt1, float y2, int alt2);

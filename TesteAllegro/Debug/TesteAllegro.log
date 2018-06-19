@@ -1,3 +1,19 @@
 ﻿  Game.cpp
-c:\git\the_game\testeallegro\game.cpp(123): warning C4101: 'error': unreferenced local variable
-  TesteAllegro.vcxproj -> C:\GIT\the_game\Debug\TesteAllegro.exe
+c:\git\the_game\testeallegro\stage1.h(8): error C2061: syntax error: identifier 'Game'
+c:\git\the_game\testeallegro\stage1.h(14): error C2061: syntax error: identifier 'Game'
+c:\git\the_game\testeallegro\game.h(79): error C2059: syntax error: '='
+c:\git\the_game\testeallegro\game.h(79): error C2238: unexpected token(s) preceding ';'
+  Main.cpp
+c:\git\the_game\testeallegro\stage1.h(8): error C2061: syntax error: identifier 'Game'
+c:\git\the_game\testeallegro\stage1.h(14): error C2061: syntax error: identifier 'Game'
+c:\git\the_game\testeallegro\game.h(79): error C2059: syntax error: '='
+c:\git\the_game\testeallegro\game.h(79): error C2238: unexpected token(s) preceding ';'
+  Stage1.cpp
+c:\git\the_game\testeallegro\game.h(77): error C2143: syntax error: missing ';' before '*'
+c:\git\the_game\testeallegro\game.h(77): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\git\the_game\testeallegro\game.h(77): error C2238: unexpected token(s) preceding ';'
+c:\git\the_game\testeallegro\game.h(79): error C2059: syntax error: '='
+c:\git\the_game\testeallegro\game.h(79): error C2238: unexpected token(s) preceding ';'
+c:\git\the_game\testeallegro\stage1.cpp(35): error C2660: 'Game::setGhost': function does not take 1 arguments
+c:\git\the_game\testeallegro\stage1.cpp(36): error C2660: 'Game::setBarbarian': function does not take 1 arguments
+  Generating Code...

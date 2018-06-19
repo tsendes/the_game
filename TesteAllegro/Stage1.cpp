@@ -8,7 +8,7 @@ Stage1::~Stage1()
 {
 
 }
-/*void Stage1::buildList()
+void Stage1::buildList()
 {
 	lEnt = new ListEnt;
 	lEnt->setlEntity(new Chart<Entity>);
@@ -20,7 +20,7 @@ void Stage1::destroyStage1()
 {
 	//delete(stage); //mexer nisso dps
 }
-/*void Stage1::addToList(Game* stage)
+void Stage1::addToList(Game* stage)
 {
 	stage->setEnvironment(new Background); //plano de fundo da telinha
 
@@ -35,7 +35,7 @@ void Stage1::destroyStage1()
 	stage->setGhost(new Ghost);
 	stage->setBarbarian(new Barbarian);
 	//Tribesman tribesman;
-}*/
+}
 void Stage1::buildStage1(Game* const stage)
 {
 	srand(time(NULL));

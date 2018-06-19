@@ -22,8 +22,8 @@ Game::Game()
 	adjust3 = 1.0;
 	
 	srand(time(NULL));
-
-	
+	my_stage1->buildStage1();
+	/*
 	for (int i = 0; i < num_bar; i++)
 	{	
 		ghost[i] = new Ghost;
@@ -41,7 +41,7 @@ Game::Game()
 	cameraX = 0;
 	worldW = SCREEN_W * 3;
 	
-
+	*/
 	al_hide_mouse_cursor(display->display); 
 	al_start_timer(tick_s); 
 	run_game();
@@ -114,10 +114,40 @@ void Game::error_check()
 			al_show_native_message_box(display->display, "Error", "Error", "failed to create character!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 			throw 1;
 		}
-		if (!block[0]->block)
+		for (int i = 0; i < 6; i++)
 		{
-			al_show_native_message_box(display->display, "Error", "Error", "failed to create field block!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-			throw 1;
+			if (!block[i]->block)
+			{
+				al_show_native_message_box(display->display, "Error", "Error", "failed to create field block!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+				throw 1;
+			}
+		}
+		for (int i = 0; i < num_bar; i++)
+		{
+			if (getStage() == 2)
+			{
+				if (!tribesman[i]->field)
+				{
+					al_show_native_message_box(display->display, "Error", "Error", "failed to create tribesman block!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+					throw 1;
+				}
+			}
+			if (getStage() == 1)
+			{
+				if (!barbarian[i]->field)
+				{
+					al_show_native_message_box(display->display, "Error", "Error", "failed to create barbarian block!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+					throw 1;
+				}
+			}
+			if (getStage() <= 2)
+			{
+				if (!ghost[i]->field)
+				{
+					al_show_native_message_box(display->display, "Error", "Error", "failed to create ghost block!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+					throw 1;
+				}
+			}
 		}
 	}
 	catch (int error)
@@ -211,10 +241,6 @@ void Game::run_game()
 						flag.button1 = true;
 						flag.button2 = false;
 					}
-					//else if (flag.button3 == true)
-					//{
-					//
-					//}
 					break;
 				case ALLEGRO_KEY_Z:
 					key[Z_KEY] = true;
@@ -400,6 +426,15 @@ void Game::run_game()
 				for (int i = 0; i < 6; i++)
 					al_draw_bitmap(block[i]->field, block[i]->getBouncer_x() + cameraX * -1, block[i]->getBouncer_y(), 0);
 
+				if (knight->getInvencible() == true)
+				{
+					knight->setCount_inv(knight->getCount_inv() - 1);
+					if (knight->getCount_inv() <= 0)
+					{
+						knight->setCount_inv(60);
+						knight->setInvencible(false);
+					}
+				}
 
 				for (int i = 0; i < num_bar; i++)
 				{
@@ -409,7 +444,7 @@ void Game::run_game()
 						if (ghost[i]->getisPresent())
 						{
 							al_draw_scaled_bitmap(ghost[i]->getWalk_sprite(), ghost[i]->getX_atual(), ghost[i]->getY_atual(), ghost[i]->getLarg(), ghost[i]->getAlt(), ghost[i]->getBouncer_x() + cameraX * -1, ghost[i]->getBouncer_y(), ghost[i]->getLarg() * 2, ghost[i]->getAlt() * 2, knight->getBouncer_x() - ghost[i]->getBouncer_x() > 0 ? ALLEGRO_FLIP_HORIZONTAL : 0);
-							if (!colliderY(knight->getBouncer_y(), HEIGHT, ghost[i]->getBouncer_y(), ghost[i]->getAlt()) || !colliderX(knight->getBouncer_x(), knight->getLarg(), ghost[i]->getBouncer_x(), ghost[i]->getLarg()))
+							if ((!colliderY(knight->getBouncer_y(), HEIGHT, ghost[i]->getBouncer_y(), ghost[i]->getAlt()) || !colliderX(knight->getBouncer_x(), knight->getLarg(), ghost[i]->getBouncer_x(), ghost[i]->getLarg())) && ghost[i]->getInvencible() == false)
 							{
 								ghost[i]->moveEnemy(knight->getBouncer_x(), knight->getBouncer_y());
 							}
@@ -421,14 +456,35 @@ void Game::run_game()
 							if (colliderX(knight->getBouncer_x() + cameraX * -1, knight->getLarg(), ghost[i]->getBouncer_x() + cameraX * -1, ghost[i]->getLarg()) && colliderY(knight->getBouncer_y(),HEIGHT , ghost[i]->getBouncer_y(), ghost[i]->getAlt()) ||
 								colliderX(lancer->getBouncer_x() + cameraX * -1, lancer->getLarg(), ghost[i]->getBouncer_x() + cameraX * -1, ghost[i]->getLarg()) && colliderY(lancer->getBouncer_y(), HEIGHT, ghost[i]->getBouncer_y(), ghost[i]->getAlt()))
 							{
-								knight->setHealth(knight->getHealth() - ghost[i]->getDamage()*.007);
-								if (flag.atk && !flag.atk_x)
+								if (knight->getInvencible() == false)
+								{
+									knight->setHealth(knight->getHealth() - ghost[i]->getDamage()*.007);
+									knight->setInvencible(true);
+								}
+								
+								if (flag.atk && !flag.atk_x && ghost[i]->getInvencible() == false)
 								{
 									ghost[i]->setHealth(ghost[i]->getHealth() - knight->getDamage());
+									ghost[i]->setBouncer_x(ghost[i]->getBouncer_x() + 10);
+									ghost[i]->setInvencible(true);
 								}
-								if (flag.atk_x && !flag.atk)
+								if (flag.atk_x && !flag.atk && ghost[i]->getInvencible() == false)
 								{
 									ghost[i]->setHealth(ghost[i]->getHealth() - lancer->getDamage());
+									ghost[i]->setBouncer_x(ghost[i]->getBouncer_x() + 10);
+									ghost[i]->setInvencible(true);
+								}
+							}
+							if (ghost[i]->getInvencible() == true)
+							{
+								ghost[i]->setCount_inv(ghost[i]->getCount_inv() - 1);
+								ghost[i]->setBouncer_x(ghost[i]->getBouncer_x() + 2); //bloquear movimento
+								ghost[i]->setBouncer_x(ghost[i]->getBouncer_y() - 2); //bloquear movimento
+
+								if (ghost[i]->getCount_inv() <= 0)
+								{
+									ghost[i]->setCount_inv(60);
+									ghost[i]->setInvencible(false);
 								}
 							}
 						}
@@ -442,7 +498,7 @@ void Game::run_game()
 								al_draw_scaled_bitmap(tribesman[i]->field, tribesman[i]->getX_atual(), tribesman[i]->getY_atual(), tribesman[i]->getLarg(), tribesman[i]->getAlt(), tribesman[i]->getBouncer_x() + cameraX * -1, tribesman[i]->getBouncer_y(), tribesman[i]->getLarg() * 3, tribesman[i]->getAlt() * 3, tribesman[i]->getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
 							else
 								al_draw_scaled_bitmap(tribesman[i]->field, tribesman[i]->getX_atk(), tribesman[i]->getY_atk(), tribesman[i]->getLarg_atk(), tribesman[i]->getAlt_atk(), tribesman[i]->getBouncer_x() + cameraX * -1, tribesman[i]->getBouncer_y(), tribesman[i]->getLarg_atk() * 3, tribesman[i]->getAlt_atk() * 3, tribesman[i]->getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
-							if (!colliderX(knight->getBouncer_x(), knight->getLarg(), tribesman[i]->getBouncer_x(), tribesman[i]->getLarg()))
+							if (!colliderX(knight->getBouncer_x(), knight->getLarg(), tribesman[i]->getBouncer_x(), tribesman[i]->getLarg()) && tribesman[i]->getInvencible() == false)
 							{
 								tribesman[i]->field = tribesman[i]->getWalk_sprite();
 								tribesman[i]->moveEnemy(knight->getBouncer_x(), knight->getBouncer_y());
@@ -456,17 +512,35 @@ void Game::run_game()
 							{
 								tribesman[i]->field = tribesman[i]->getAttack_sprite();
 								tribesman[i]->attackEnemy();
-								knight->setHealth(knight->getHealth() - tribesman[i]->getDamage()*.005);
-								if (flag.atk && !flag.atk_x)
+								if (knight->getInvencible() == false)
+								{
+									
+									knight->setHealth(knight->getHealth() - tribesman[i]->getDamage()*.005);
+									knight->setInvencible(true);
+								}
+								if (flag.atk && !flag.atk_x && tribesman[i]->getInvencible() == false)
 								{
 									tribesman[i]->setHealth(tribesman[i]->getHealth() - knight->getDamage());
+									tribesman[i]->setBouncer_x(tribesman[i]->getBouncer_x() + 10);
+									tribesman[i]->setInvencible(true);
 								}
-								if (!flag.atk && flag.atk_x)
+								else if (!flag.atk && flag.atk_x && tribesman[i]->getInvencible() == false)
 								{
 									tribesman[i]->setHealth(tribesman[i]->getHealth() - lancer->getDamage());
+									tribesman[i]->setBouncer_x(tribesman[i]->getBouncer_x() + 10);
+									tribesman[i]->setInvencible(true);
 								}
 							}
-
+							if (tribesman[i]->getInvencible() == true)
+							{
+								tribesman[i]->setCount_inv(tribesman[i]->getCount_inv() - 1);
+								tribesman[i]->setBouncer_x(tribesman[i]->getBouncer_x() + 1); //bloquear movimento
+								if (tribesman[i]->getCount_inv() <= 0)
+								{
+									tribesman[i]->setCount_inv(60);
+									tribesman[i]->setInvencible(false);
+								}
+							}
 						}
 					}
 					if (getStage() == 1)
@@ -491,23 +565,23 @@ void Game::run_game()
 							if (colliderX(knight->getBouncer_x() + cameraX * -1, knight->getLarg(), barbarian[i]->getBouncer_x() + cameraX * -1, barbarian[i]->getLarg()) ||
 								colliderX(lancer->getBouncer_x() + cameraX * -1, lancer->getLarg(), barbarian[i]->getBouncer_x() + cameraX * -1, barbarian[i]->getLarg()))
 							{
-
-								if (barbarian[i]->getInvencible() == false)
+								barbarian[i]->field = barbarian[i]->getAttack_sprite();
+								barbarian[i]->attackEnemy();
+								if (knight->getInvencible() == false)
 								{
-									barbarian[i]->field = barbarian[i]->getAttack_sprite();
-									barbarian[i]->attackEnemy();
 									knight->setHealth(knight->getHealth() - barbarian[i]->getDamage()*.007);
+									knight->setInvencible(true);
 								}
 								if (flag.atk && !flag.atk_x && barbarian[i]->getInvencible() == false)
 								{
 									barbarian[i]->setHealth(barbarian[i]->getHealth() - knight->getDamage());
-									barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + 100);
+									barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + 10);
 									barbarian[i]->setInvencible(true);
 								}
 								else if (!flag.atk && flag.atk_x && barbarian[i]->getInvencible() == false)
 								{
 									barbarian[i]->setHealth(barbarian[i]->getHealth() - lancer->getDamage());
-									barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + 100);
+									barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + 10);
 									barbarian[i]->setInvencible(true);
 								}
 								
@@ -515,7 +589,7 @@ void Game::run_game()
 							if(barbarian[i]->getInvencible() == true)
 							{
 								barbarian[i]->setCount_inv(barbarian[i]->getCount_inv() - 1);
-								barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + 2); //bloquear movimento
+								barbarian[i]->setBouncer_x(barbarian[i]->getBouncer_x() + 1); //bloquear movimento
 								if (barbarian[i]->getCount_inv() <= 0)
 								{
 									barbarian[i]->setCount_inv(60);
@@ -546,7 +620,11 @@ void Game::run_game()
 						{
 							boss.field = boss.getAttack_sprite();
 							boss.attackEnemy();
-							knight->setHealth(knight->getHealth() - boss.getDamage()*.007);
+							if (knight->getInvencible() == false)
+							{
+								knight->setHealth(knight->getHealth() - boss.getDamage()*.007);
+								knight->setInvencible(true);
+							}
 
 							if (flag.atk && !flag.atk_x)
 							{
@@ -555,23 +633,25 @@ void Game::run_game()
 									boss.setHealth(boss.getHealth() - knight->getDamage());
 									boss.setInvencible(true);
 								}
-								else
-								{
-									boss.setCount_inv(boss.getCount_inv() - 1);
-									if (boss.getCount_inv() <= 0)
-									{
-										boss.setInvencible(false);
-										boss.setCount_inv(30);
-									}
-								}
-									
-								
 							}
 							if (!flag.atk && flag.atk_x)
 							{
-								boss.setHealth(boss.getHealth() - lancer->getDamage());
+								if (boss.getInvencible() == false)
+								{
+									boss.setHealth(boss.getHealth() - lancer->getDamage());
+									boss.setInvencible(true);
+								}
 							}
 							
+						}
+						if(boss.getInvencible() == true)
+						{
+							boss.setCount_inv(boss.getCount_inv() - 1);
+							if (boss.getCount_inv() <= 0)
+							{
+								boss.setInvencible(false);
+								boss.setCount_inv(20);
+							}
 						}
 						if (boss.getHealth() <= 2500)
 						{
