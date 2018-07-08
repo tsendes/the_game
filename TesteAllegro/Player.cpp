@@ -114,3 +114,11 @@ void Player::move(int* timer, float* adjust, int SCREEN_W, int SCREEN_H, bool* r
 	}
 	*redraw = true;
 }
+void Player::setAtk(bool a)
+{
+	atk = a;
+}
+bool Player::getAtk()
+{
+	return atk;
+}

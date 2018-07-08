@@ -3,9 +3,6 @@
 
 class Barracks : public Object
 {
-private:
-	ALLEGRO_BITMAP * view;
-
 public:
 	Barracks();
 	~Barracks();

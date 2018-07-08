@@ -16,6 +16,7 @@ protected:
 	float damage;
 	bool invencible;
 	int count_inv;
+
 public:
 	int count_atk;
 	int coluna_atk;
@@ -39,7 +40,6 @@ public:
 	bool getInvencible();
 	void setCount_inv(int i);
 	int getCount_inv();
+	virtual void move() { }
 
-	
-	
 };

@@ -1,5 +1,6 @@
 #include "Stage.h"
 
+
 Stage::Stage()
 {
 
@@ -15,4 +16,8 @@ void Stage::setListEnt(ListEnt* l)
 ListEnt* Stage::getListEnt()
 {
 	return lEnt;
+}
+void Stage::buildStage()
+{
+
 }

@@ -71,7 +71,62 @@ void Entity::setHealth(float lifeN)
 {
 	health = lifeN;
 }
-float Entity::getHealth()
+int Entity::getHealth()
 {
 	return health;
+}
+uint8_t Entity::colliderX(float x1, int larg1, float x2, int larg2)
+{
+	//Y É INVERTIDO SEU BURRO
+	if (x2 > x1)
+	{
+		if (larg1 / 1.5 + larg2 / 1.5 >= x2 - x1)
+		{
+			return 1;
+		}
+		else
+			return 0;
+	}
+	else
+	{
+		if (larg1 / 1.5 + larg2 / 1.5 <= x2 - x1)
+		{
+			return 1;
+		}
+		else
+			return 0;
+	}
+
+	return 0;
+}
+uint8_t Entity::colliderY(float y1, int alt1, float y2, int alt2)
+{
+	if (y2 < y1)
+	{
+		if (alt1 / 2 - alt2 / 2 <= y2 - y1)
+		{
+			return 1;
+		}
+		else
+			return 0;
+	}
+	else
+	{
+		if (alt1 / 2 - alt2 / 2 <= y2 - y1)
+		{
+			return 1;
+		}
+		else
+			return 0;
+	}
+
+	return 0;
+}
+bool Entity::getisPresent()
+{
+	return is_present;
+}
+void Entity::setisPresent(bool pr)
+{
+	is_present = pr;
 }

@@ -13,15 +13,13 @@ protected:
 	int x_atual; //x atual no mapa sprite
 	int y_atual; //y atual no mapa sprite
 	float pos_i;
-	float health;
+	int health;
 	bool is_present;
 	float idleP;
 	float idleN;
 
 public:
 	ALLEGRO_BITMAP * field; //gera o bloco, é Tatepon por agora
-	//ALLEGRO_BITMAP* walk_sprite;
-	//ALLEGRO_BITMAP* attack_sprite;
 	int cont; //contador de ql parte do sprite esta
 	int coluna; //qntd de colunas do mapa sprite
 	Entity();
@@ -41,19 +39,14 @@ public:
 	void setPos_i(float pos_i);
 	float getPos_i();
 	void setHealth(float life);
-	float getHealth();
-	bool getisPresent()
-	{
-		return is_present;
-	}
-	void setisPresent(bool pr)
-	{
-		is_present = pr;
-	}
+	int getHealth();
+	uint8_t colliderX(float x1, int larg1, float x2, int larg2);
+	uint8_t colliderY(float y1, int alt1, float y2, int alt2);
+	bool getisPresent();
+	void setisPresent(bool pr);
 
 	enum MYKEYS
 	{
 		KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, Z_KEY, X_KEY, I_KEY, K_KEY, J_KEY, L_KEY
 	};
-	//bool key[10] = { false, false, false, false, false, false, false, false, false, false }; //funfa em combo com o MYKEYS
 };

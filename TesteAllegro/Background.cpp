@@ -30,5 +30,10 @@ void Background::create_background()
 	imagev3 = image3;
 	w = 1920;
 	h = 1080;
-
+}
+void Background::drawBackground(Knight* knight)
+{
+	al_draw_scaled_bitmap(imagev1, 0, 0, w, h, knight->getCameraX() * -1, 0, 1366, 768, 0);
+	al_draw_scaled_bitmap(imagev2, 0, 0, w, h, 1366 + knight->getCameraX() * -1, 0, 1366, 768, 0);
+	al_draw_scaled_bitmap(imagev3, 0, 0, w, h, 1366 * 2 + knight->getCameraX() * -1, 0, 1366, 768, 0);
 }

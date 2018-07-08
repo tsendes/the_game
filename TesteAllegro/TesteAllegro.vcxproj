@@ -76,7 +76,8 @@
     <Allegro_AddonDialog>true</Allegro_AddonDialog>
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
-    <Allegro_AddonAudio>true</Allegro_AddonAudio>
+    <Allegro_AddonAudio>
+    </Allegro_AddonAudio>
     <Allegro_AddonAcodec>
     </Allegro_AddonAcodec>
     <Allegro_AddonPhysfs>
@@ -161,6 +162,8 @@
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="Stage2.cpp" />
+    <ClCompile Include="Stage3.cpp" />
     <ClCompile Include="Tribesman.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +195,8 @@
     <ClInclude Include="Rock.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Stage1.h" />
+    <ClInclude Include="Stage2.h" />
+    <ClInclude Include="Stage3.h" />
     <ClInclude Include="Tribesman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

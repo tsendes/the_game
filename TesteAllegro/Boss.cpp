@@ -32,9 +32,9 @@ void Boss::create_Boss()
 	bouncer_y = 650 - alt * SCALE;
 	pos_i = 736 - alt * SCALE;
 	left = false;
-	damage = 100;
-	damage_ult = 10;
-	health = 5000;
+	damage = 5;
+	damage_ult = 2;
+	health = 50;
 	is_present = true;
 	enemy_score = 50;
 	count_inv = 30;
@@ -67,14 +67,6 @@ void Boss::setDamage_Ult(float dmg)
 float Boss::getDamage_Ult()
 {
 	return damage_ult;
-}
-void Boss::setCharge_Bar(int bar)
-{
-	charge_bar = bar;
-}
-int Boss::getCharge_Bar()
-{
-	return charge_bar;
 }
 void Boss:: setUlt_sprite(ALLEGRO_BITMAP* sp)
 {
@@ -174,4 +166,64 @@ void Boss::attackEnemy()
 			x_atk = 0;
 		}
 	}
+}
+void Boss::move(Knight* knight, Lancer* lancer)
+{
+	if (field == getWalk_sprite())
+		al_draw_scaled_bitmap(field, getX_atual(), getY_atual(), getLarg(), getAlt(), getBouncer_x(), getBouncer_y(), getLarg() * 3, getAlt() * 3, getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
+	else
+		al_draw_scaled_bitmap(field, getX_atk(), getY_atk(), getLarg_atk(), getAlt_atk(), getBouncer_x(), getBouncer_y(), getLarg_atk() * 3, getAlt_atk() * 3, getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
+
+	if (!colliderX(knight->getBouncer_x(), knight->getLarg(), getBouncer_x(), getLarg()) && !colliderY(knight->getBouncer_y(), 16 /*HEIGHT*/, getBouncer_y(), getAlt()))
+	{
+		if (getHealth() >= 30)
+		{
+			field = getWalk_sprite();
+			moveEnemy(knight->getBouncer_x(), knight->getBouncer_y());
+		}
+	}
+	else
+	{
+		field = getAttack_sprite();
+		attackEnemy();
+		if (knight->getInvencible() == false)
+		{
+			knight->setHealth(knight->getHealth() - getDamage()*.5);
+			knight->setInvencible(true);
+		}
+
+		if (knight->getAtk() && !lancer->getAtk())
+		{
+			if (getInvencible() == false)
+			{
+				setHealth(getHealth() - knight->getDamage());
+				setInvencible(true);
+			}
+		}
+		if (!knight->getAtk() && lancer->getAtk())
+		{
+			if (getInvencible() == false)
+			{
+				setHealth(getHealth() - lancer->getDamage());
+				setInvencible(true);
+			}
+		}
+
+	}
+	if (getInvencible() == true)
+	{
+		setCount_inv(getCount_inv() - 1);
+		if (getCount_inv() <= 0)
+		{
+			setInvencible(false);
+			setCount_inv(60);
+		}
+	}
+	if (getHealth() <= 8)
+	{
+		field = getUlt_sprite();
+		al_draw_scaled_bitmap(field, getX_atk(), getY_atk(), getLarg_atk(), getAlt_atk(), getBouncer_x(), getBouncer_y(), getLarg_atk() * 3, getAlt_atk() * 3, getLeft() ? 0 : ALLEGRO_FLIP_HORIZONTAL);
+		knight->setHealth(knight->getHealth() - getDamage_Ult()*.003);
+	}
+	
 }

@@ -7,7 +7,8 @@ Barbarian::Barbarian()
 
 Barbarian::~Barbarian()
 {
-
+	//al_destroy_bitmap(walk_sprite);
+	//al_destroy_bitmap(attack_sprite);
 }
 void Barbarian::create_Barbarian()
 {

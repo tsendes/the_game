@@ -14,9 +14,7 @@ public:
 	~Enemy();
 
 	virtual void moveEnemy(float x, float y) {}
-	virtual void attackEnemy() = 0;
+	virtual void attackEnemy() { };
 	bool hasVision(float vision);
 	float getEnemy_score();
-	
-
 };

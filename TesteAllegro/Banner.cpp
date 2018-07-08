@@ -24,7 +24,3 @@ void Banner::create_Banner()
 	left = false;
 }
 
-void Banner::attack(bool* atk, bool* atk_x, bool* key)
-{
-	// nada acontece feijoada
-}

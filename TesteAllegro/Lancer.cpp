@@ -29,12 +29,12 @@ void Lancer::create_Lancer()
 	pos_i = 736 - alt * SCALE;
 	left = false;
 	is_present = true;
-	damage = 50;
+	damage = 20;
 }
 
-void Lancer::attack(bool* atk, bool* atk_x, bool* key)
+void Lancer::attack(bool atk_x, bool* key)
 {
-	if (*atk_x == true && *atk == false) //atk Lancer
+	if (atk == true && atk_x == false) //atk Lancer
 	{
 		count_atk++;
 		if (count_atk == 10)

@@ -7,5 +7,4 @@ class Keyboard
 public:
 	Keyboard();
 	~Keyboard();
-	void create_keyboard();
 };

@@ -2,6 +2,7 @@
 #include<allegro5/allegro.h>
 #include "allegro5/allegro_image.h"
 #include "allegro5/allegro_native_dialog.h"
+#include "Knight.h"
 
 
 class Background
@@ -21,6 +22,7 @@ public:
 	int w;
 	int h;
 	void create_background();
+	void drawBackground(Knight* knight);
 	Background();
 	~Background();
 };
